@@ -1,0 +1,60 @@
+{
+  "notificationPopup": {
+    "enabled": true,
+    "title": "Plan with confidence",
+    "message": "Download our complimentary business planning checklist and prepare your next move.",
+    "buttonLabel": "Download checklist",
+    "documentUrl": "/uploads/nba-business-planning-checklist.pdf"
+  },
+  "directorAndTeam": {
+    "enabled": true,
+    "members": [
+      {
+        "id": "director-pravigya",
+        "enabled": true,
+        "name": "Pravigya Pranav Panthi",
+        "title": "Director & Financial Advisor",
+        "bio": "Pravigya helps business owners bring clarity to financial decisions, governance, and sustainable growth.",
+        "imageUrl": "/nakshatra-logo.png"
+      }
+    ]
+  },
+  "achievements": {
+    "enabled": true,
+    "items": [
+      { "id": "assets", "enabled": true, "value": "Nrs. 1B+", "label": "Assets advised" },
+      { "id": "founded", "enabled": true, "value": "2018", "label": "Year founded" },
+      { "id": "clients", "enabled": true, "value": "100+", "label": "Corporate clients" },
+      { "id": "disciplines", "enabled": true, "value": "4", "label": "Core disciplines" }
+    ]
+  },
+  "testimonials": {
+    "enabled": true,
+    "items": [
+      { "id": "testimonial-1", "enabled": true, "quote": "NBA gave us the structure and confidence to make our next investment decision.", "clientName": "Managing Director", "company": "Growing enterprise, Kathmandu" },
+      { "id": "testimonial-2", "enabled": true, "quote": "Clear advice, thoughtful questions, and practical actions our team could actually use.", "clientName": "Founder", "company": "Private business, Nepal" }
+    ]
+  },
+  "services": {
+    "enabled": true,
+    "items": [
+      { "id": "financial-planning", "enabled": true, "title": "Financial Planning", "summary": "Turn financial complexity into confident decisions.", "details": "Cash-flow planning, investment thinking, risk review, and long-term financial roadmaps." },
+      { "id": "tax-advisory", "enabled": true, "title": "Tax Advisory", "summary": "Protect value while planning for sustainable growth.", "details": "Practical tax planning, compliance support, and decision-ready analysis." },
+      { "id": "governance", "enabled": true, "title": "Corporate Governance", "summary": "Build stronger structures, controls, and trust.", "details": "Governance reviews, policy design, reporting structures, and board-ready insight." },
+      { "id": "consulting", "enabled": true, "title": "Business Consulting", "summary": "Make the next stage of growth feel possible.", "details": "Strategy, operating model, performance metrics, and founder advisory." }
+    ]
+  },
+  "highlightedVideo": {
+    "enabled": true,
+    "embedUrl": "https://www.youtube.com/embed/ScMzIvxBSi4",
+    "title": "A clearer conversation about your next move",
+    "description": "A short perspective on making confident financial decisions in a changing market."
+  },
+  "posts": {
+    "enabled": true,
+    "items": [
+      { "id": "post-1", "enabled": true, "title": "The founder's guide to financial clarity", "category": "Financial planning", "publicationDate": "2024-06-12", "downloadUrl": "#contact" },
+      { "id": "post-2", "enabled": true, "title": "Governance habits that build trust", "category": "Governance", "publicationDate": "2024-05-03", "downloadUrl": "#contact" }
+    ]
+  }
+}

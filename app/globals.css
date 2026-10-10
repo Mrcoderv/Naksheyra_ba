@@ -1,0 +1,77 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  color-scheme: light;
+  --background: #f8f9fa;
+  --foreground: #0b1b3d;
+  --card: #ffffff;
+  --card-foreground: #0b1b3d;
+  --popover: #ffffff;
+  --popover-foreground: #0b1b3d;
+  --primary: #0b1b3d;
+  --primary-foreground: #ffffff;
+  --secondary: #e8eee9;
+  --secondary-foreground: #0b1b3d;
+  --muted: #eef1f3;
+  --muted-foreground: #5c6575;
+  --accent: #0a7e39;
+  --accent-foreground: #ffffff;
+  --destructive: #6e0e14;
+  --border: rgba(11, 27, 61, 0.12);
+  --input: rgba(11, 27, 61, 0.15);
+  --ring: #0a7e39;
+  --radius: 0.75rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--background); color: var(--foreground); font-family: Arial, Helvetica, sans-serif; }
+button, a, input, textarea { font: inherit; }
+::selection { background: #0a7e39; color: white; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+.dark { color-scheme: light; }
+
+@layer base {
+  * { @apply border-border outline-ring/50; }
+}
+
+@keyframes fade-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+section > div { animation: fade-up 0.7s ease both; }
+
+@media (max-width: 640px) {
+  section > div { animation: none; }
+}

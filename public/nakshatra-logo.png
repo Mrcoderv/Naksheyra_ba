@@ -1,0 +1,79 @@
+Act as an expert Senior Full-Stack Developer and UI/UX Designer. Build a complete, production-ready, ultra-fast, SEO-friendly consultancy website and local admin CMS for a firm named "Nakshatra Business Advisory (NBA)".
+
+---
+
+### 1. BRAND IDENTITY & KEY DETAILS
+- Company Name: Nakshatra Business Advisory (NBA)
+- Tagline: "★ Plan Today. Prosper Tomorrow. Your Trusted Partner in Financial Success."
+- Core Focus: FINANCIAL PLANNING, Tax Advisory, Corporate Governance, and Business Consulting.
+- Director / Leadership: Pravigya Pranav Panthi
+- Location: Kathmandu, Nepal
+- Architecture Style: Inspired by top consultancy platforms like Kathmandu Business Consultants (KBC) and Guardian Consulting, but with superior UI/UX, modern typography, crisp contrast, and structured grid cards.
+
+---
+
+### 2. SYSTEM ARCHITECTURE & TECH STACK
+- Frontend: Pure HTML5, Tailwind CSS (via CDN) or modern custom CSS, and Vanilla JavaScript. Fast, zero-framework bloat, fully responsive across mobile, tablet, and desktop.
+- Backend (Local Admin CMS): Node.js + Express running locally on `http://localhost:3000/admin.html`.
+- Local File Handling: Uses `multer` for local file and image uploads (PDF documents, Director photos, Member headshots). Saved locally to `public/uploads/`.
+- Data Storage: Single structured JSON file (`data/dynamic-content.json`) driving all dynamic sections.
+- Git Automation: When changes are saved in the local admin CMS, `server.js` automatically executes terminal commands (`git add .`, `git commit -m "..."`, `git push origin main`) to push updates to GitHub.
+- Hosting Compatibility: 100% static host friendly (Vercel, Netlify, or GitHub Pages). Every push triggers an instant live rebuild.
+- Contact Form: Serverless form-to-email integration via Web3Forms or Formspree.
+
+---
+
+### 3. REQUIRED DYNAMIC SECTIONS & FEATURES (MANAGEABLE VIA CMS)
+
+Every dynamic section must support an `enabled: true/false` toggle switch so the admin can hide/show elements without deleting data:
+
+1. Notification Popup Modal & Document Upload:
+   - Enable/Disable toggle.
+   - Headline/Notice title, custom message, button label, and PDF file upload input.
+
+2. Director & Team Members (Leadership Page / Section):
+   - Add, edit, or delete members.
+   - Fields: Name (e.g., Pravigya Pranav Panthi), Title (Director / Financial Advisor), Bio / Short Message, Enable/Disable switch, and Profile Image Upload (`.jpg`, `.png`, `.webp`).
+
+3. Achievements & Metrics:
+   - Add/edit/delete key company metrics (e.g., "Nrs. 1B+ Assets Under Management", "2018 Year Founded", "100+ Corporate Clients").
+
+4. Testimonials Section:
+   - Add/edit/delete client reviews (Quote, Client Name, Company / Designation).
+
+5. Services Grid:
+   - Dynamic cards for services (Title, Short Summary, Detailed Breakdown).
+
+6. Highlighted Video Section:
+   - YouTube embed URL, video title, and short description.
+
+7. Insights & Downloadable Guides / Posts:
+   - Article title, category badge, publication date, and downloadable guide URL/PDF.
+
+---
+
+### 4. DELIVERABLE SOURCE CODE REQUIREMENTS
+
+Provide complete code for the following 4 primary files:
+
+#### File 1: `data/dynamic-content.json`
+Pre-populated JSON structure covering `notificationPopup`, `directorAndTeam` (with Pravigya Pranav Panthi), `achievements`, `testimonials`, `services`, `highlightedVideo`, and `posts`. All containing `enabled: true`.
+
+#### File 2: `server.js` (Node.js Backend)
+- Sets up Express, static file serving (`/uploads`), Multer storage engine for file/image uploads, JSON read/write endpoints, and `child_process` Git terminal automation (`git add .`, `git commit`, `git push`).
+
+#### File 3: `public/admin.html` (Local CMS Dashboard)
+- A clean, modern admin interface.
+- Tabbed or card layout with inputs for all sections.
+- File upload inputs for Team Member Images and Notice PDFs.
+- Enable/Disable checkboxes for every item/section.
+- Save button that uploads files, updates JSON, and logs Git deployment status in real-time.
+
+#### File 4: `index.html` (Public Website Frontend)
+- Semantic HTML5 structure with OpenGraph meta tags for SEO.
+- Modern header with logo (NBA) and sticky navigation.
+- Hero Section featuring the tagline "Plan Today. Prosper Tomorrow."
+- Leadership / Director Section dynamically rendering team photos and bios.
+- Services grid, achievements stat-bar, video breakdown embed, and testimonials carousel/grid.
+- Popup Modal script that checks `notificationPopup.enabled` on load.
+- Contact form wired to Web3Forms.
