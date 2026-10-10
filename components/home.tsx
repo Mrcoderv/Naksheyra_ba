@@ -24,7 +24,7 @@ import {
 
 const serviceIcons = [BarChart3, Calculator, ShieldCheck, BriefcaseBusiness, Landmark, Sparkles]
 const on = (list: any[]) => (Array.isArray(list) ? list.filter((x) => x && x.enabled !== false) : [])
-const show = (section: any) => !section || section.enabled !== false
+const show = (section: any) => !!section && section.enabled !== false
 
 export default function Home({ initial }: { initial: any }) {
   const [content, setContent] = useState(initial)
@@ -104,7 +104,7 @@ export default function Home({ initial }: { initial: any }) {
         )}
       </header>
 
-      {show(hero) && (
+      {show(c.hero) && (
         <section id="top" className="relative mx-auto grid max-w-7xl items-center gap-12 overflow-hidden px-5 pb-20 pt-16 lg:grid-cols-[1.05fr_.95fr] lg:px-8 lg:pb-28 lg:pt-24">
           <div className="relative">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#6e0e14]/20 bg-white px-3 py-2 text-xs font-bold uppercase tracking-[0.14em] text-[#6e0e14]">
@@ -348,7 +348,7 @@ export default function Home({ initial }: { initial: any }) {
         </section>
       )}
 
-      {show(contact) && (
+      {show(c.contact) && (
         <section id="contact" className="bg-[#e8eee9] px-5 py-24 lg:px-8">
           <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
             <div>
@@ -378,7 +378,7 @@ export default function Home({ initial }: { initial: any }) {
         </section>
       )}
 
-      {show(footer) && (
+      {show(c.footer) && (
         <footer className="bg-[#0b1b3d] px-5 py-10 text-white lg:px-8">
           <div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 sm:flex-row sm:items-end">
             <div>
