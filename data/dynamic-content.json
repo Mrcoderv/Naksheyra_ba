@@ -1,96 +1,13 @@
 {
-  "topBar": {
+  "notificationPopup": {
     "enabled": true,
-    "text": "KATHMANDU, NEPAL · YOUR TRUSTED PARTNER IN FINANCIAL SUCCESS"
-  },
-  "brand": {
-    "enabled": true,
-    "name": "NAKSHATRA",
-    "tagline": "BUSINESS ADVISORY",
-    "logoUrl": "/nakshatra-logo.png"
-  },
-  "hero": {
-    "enabled": true,
-    "eyebrow": "Advisory, with clarity",
-    "title": "Plan today.",
-    "highlight": "Prosper tomorrow.",
-    "subtitle": "We help ambitious people and businesses make confident financial decisions, build resilient structures, and create lasting value.",
-    "primaryLabel": "Start a conversation",
-    "primaryHref": "#contact",
-    "secondaryLabel": "Explore services",
-    "secondaryHref": "#services",
-    "statValue": "15+",
-    "statLabel": "Years of insight"
-  },
-  "services": {
-    "enabled": true,
-    "eyebrow": "What we do",
-    "title": "Expertise that moves your business forward.",
-    "items": [
-      {
-        "id": "financial-planning",
-        "enabled": true,
-        "title": "Financial Planning",
-        "summary": "Turn financial complexity into confident decisions.",
-        "details": "Cash-flow planning, investment thinking, risk review, and long-term financial roadmaps."
-      },
-      {
-        "id": "tax-advisory",
-        "enabled": true,
-        "title": "Tax Advisory",
-        "summary": "Protect value while planning for sustainable growth.",
-        "details": "Practical tax planning, compliance support, and decision-ready analysis."
-      },
-      {
-        "id": "governance",
-        "enabled": true,
-        "title": "Corporate Governance",
-        "summary": "Build stronger structures, controls, and trust.",
-        "details": "Governance reviews, policy design, reporting structures, and board-ready insight."
-      },
-      {
-        "id": "consulting",
-        "enabled": true,
-        "title": "Business Consulting",
-        "summary": "Make the next stage of growth feel possible.",
-        "details": "Strategy, operating model, performance metrics, and founder advisory."
-      }
-    ]
-  },
-  "approach": {
-    "enabled": true,
-    "eyebrow": "The NBA approach",
-    "title": "Clarity is not a luxury. It is a strategy.",
-    "subtitle": "We listen carefully, simplify the complex, and stay close to the outcomes that matter to you.",
-    "ctaLabel": "Meet your advisory team",
-    "ctaHref": "#contact",
-    "steps": [
-      {
-        "id": "listen",
-        "enabled": true,
-        "title": "Listen deeply",
-        "text": "Understand your context before recommending a path."
-      },
-      {
-        "id": "clarity",
-        "enabled": true,
-        "title": "Build clarity",
-        "text": "Make the important choices clear and actionable."
-      },
-      {
-        "id": "accountable",
-        "enabled": true,
-        "title": "Stay accountable",
-        "text": "Keep progress moving with advice that lasts."
-      }
-    ]
+    "title": "Plan with confidence",
+    "message": "Download our complimentary business planning checklist and prepare your next move.",
+    "buttonLabel": "Download checklist",
+    "documentUrl": "/uploads/nba-business-planning-checklist.pdf"
   },
   "directorAndTeam": {
     "enabled": true,
-    "eyebrow": "A trusted partner",
-    "title": "Built for the decisions ahead.",
-    "directorCaption": "Meet the director",
-    "subtitle": "At Nakshatra Business Advisory, we believe every strong business starts with a clear view of where it is going. Our role is to give you that view—and the confidence to act on it.",
     "members": [
       {
         "id": "director-pravigya",
@@ -131,49 +48,8 @@
       }
     ]
   },
-  "highlightedVideo": {
-    "enabled": true,
-    "eyebrow": "Advisory insights",
-    "title": "Advisory briefings",
-    "items": [
-      {
-        "id": "video-1",
-        "enabled": true,
-        "title": "A clearer conversation about your next move",
-        "embedUrl": "https://www.youtube.com/embed/ScMzIvxBSi4",
-        "description": "A short perspective on making confident financial decisions in a changing market."
-      }
-    ]
-  },
-  "gallery": {
-    "enabled": true,
-    "eyebrow": "Inside NBA",
-    "title": "A look at how we work",
-    "items": [
-      {
-        "id": "gallery-1",
-        "enabled": true,
-        "imageUrl": "/nakshatra-advisory.png",
-        "caption": "Advisory sessions"
-      },
-      {
-        "id": "gallery-2",
-        "enabled": true,
-        "imageUrl": "/nakshatra-hero.png",
-        "caption": "Our workspace"
-      },
-      {
-        "id": "gallery-3",
-        "enabled": true,
-        "imageUrl": "/nakshatra-insights.png",
-        "caption": "Research & insights"
-      }
-    ]
-  },
   "testimonials": {
     "enabled": true,
-    "eyebrow": "What clients say",
-    "title": "Trusted to advise with clarity.",
     "items": [
       {
         "id": "testimonial-1",
@@ -191,10 +67,47 @@
       }
     ]
   },
+  "services": {
+    "enabled": true,
+    "items": [
+      {
+        "id": "financial-planning",
+        "enabled": true,
+        "title": "Financial Planning",
+        "summary": "Turn financial complexity into confident decisions.",
+        "details": "Cash-flow planning, investment thinking, risk review, and long-term financial roadmaps."
+      },
+      {
+        "id": "tax-advisory",
+        "enabled": true,
+        "title": "Tax Advisory",
+        "summary": "Protect value while planning for sustainable growth.",
+        "details": "Practical tax planning, compliance support, and decision-ready analysis."
+      },
+      {
+        "id": "governance",
+        "enabled": true,
+        "title": "Corporate Governance",
+        "summary": "Build stronger structures, controls, and trust.",
+        "details": "Governance reviews, policy design, reporting structures, and board-ready insight."
+      },
+      {
+        "id": "consulting",
+        "enabled": true,
+        "title": "Business Consulting",
+        "summary": "Make the next stage of growth feel possible.",
+        "details": "Strategy, operating model, performance metrics, and founder advisory."
+      }
+    ]
+  },
+  "highlightedVideo": {
+    "enabled": true,
+    "embedUrl": "https://www.youtube.com/embed/ScMzIvxBSi4",
+    "title": "A clearer conversation about your next move",
+    "description": "A short perspective on making confident financial decisions in a changing market."
+  },
   "posts": {
     "enabled": true,
-    "eyebrow": "Insights & guides",
-    "title": "Ideas worth acting on.",
     "items": [
       {
         "id": "post-1",
@@ -213,61 +126,5 @@
         "downloadUrl": "#contact"
       }
     ]
-  },
-  "faqs": {
-    "enabled": true,
-    "eyebrow": "Questions, answered",
-    "title": "Let's make it simple.",
-    "items": [
-      {
-        "id": "faq-1",
-        "enabled": true,
-        "question": "What does NBA help businesses with?",
-        "answer": "We help founders and established businesses with financial planning, tax advisory, governance, and strategic consulting."
-      },
-      {
-        "id": "faq-2",
-        "enabled": true,
-        "question": "Who do you typically work with?",
-        "answer": "Our clients include entrepreneurs, growing companies, family businesses, and teams preparing for their next stage of growth."
-      },
-      {
-        "id": "faq-3",
-        "enabled": true,
-        "question": "How do we get started?",
-        "answer": "Book a consultation and tell us where you are today. We will map the right next steps around your goals."
-      }
-    ]
-  },
-  "contact": {
-    "enabled": true,
-    "eyebrow": "Start here",
-    "title": "Ready for a clearer path?",
-    "subtitle": "Tell us a little about what you are working through. We will be in touch to arrange a conversation.",
-    "note": "No obligation. Just a useful first conversation.",
-    "email": "hello@nakshatraba.com",
-    "phone": "+977-1-0000000",
-    "address": "Kathmandu, Nepal"
-  },
-  "footer": {
-    "enabled": true,
-    "brandName": "NAKSHATRA",
-    "tagline": "BUSINESS ADVISORY (NBA)",
-    "note": "Plan today. Prosper tomorrow.",
-    "copyright": "© 2024 Nakshatra Business Advisory. All rights reserved."
-  },
-  "seo": {
-    "enabled": true,
-    "title": "Nakshatra Business Advisory | Plan Today. Prosper Tomorrow.",
-    "description": "Strategic financial planning, tax advisory, corporate governance, and business consulting for ambitious businesses in Kathmandu, Nepal.",
-    "keywords": "financial planning Nepal, tax advisory Kathmandu, business consulting Nepal, corporate governance",
-    "ogImage": "/nakshatra-logo.png"
-  },
-  "notificationPopup": {
-    "enabled": true,
-    "title": "Plan with confidence",
-    "message": "Download our complimentary business planning checklist and prepare your next move.",
-    "buttonLabel": "Download checklist",
-    "documentUrl": "/uploads/nba-business-planning-checklist.pdf"
   }
 }
