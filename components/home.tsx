@@ -106,15 +106,17 @@ export default function Home({ initial }: { initial: any }) {
       {show(c.hero) && (
         <section id="top" className="relative mx-auto grid max-w-7xl items-center gap-12 overflow-hidden px-5 pb-20 pt-16 lg:grid-cols-[1.05fr_.95fr] lg:px-8 lg:pb-28 lg:pt-24">
           <div className="relative">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#6e0e14]/20 bg-white px-3 py-2 text-xs font-bold uppercase tracking-[0.14em] text-[#6e0e14]">
-              <Sparkles className="size-3.5 text-[#0a7e39]" /> {hero.eyebrow}
-            </div>
+            {hero.eyebrow && (
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#6e0e14]/20 bg-white px-3 py-2 text-xs font-bold uppercase tracking-[0.14em] text-[#6e0e14]">
+                <Sparkles className="size-3.5 text-[#0a7e39]" /> {hero.eyebrow}
+              </div>
+            )}
             <h1 className="max-w-3xl text-5xl font-black leading-[0.98] tracking-[-0.055em] sm:text-6xl lg:text-[76px]">
               {hero.title}
               <br />
               <span className="text-[#0a7e39]">{hero.highlight}</span>
             </h1>
-            <p className="mt-7 max-w-xl text-lg leading-8 text-[#0b1b3d]/65">{hero.subtitle}</p>
+            <p className="mt-7 max-w-xl text-lg leading-8 text-[#0b1b3d]/75">{hero.subtitle}</p>
             <div className="mt-9 flex flex-wrap gap-3">
               <a href={hero.primaryHref || '#contact'} className="inline-flex items-center rounded-full bg-[#0b1b3d] px-6 py-4 text-sm font-bold text-white transition-colors hover:bg-[#0a7e39]">
                 {hero.primaryLabel} <ArrowRight className="ml-3 size-4" />
@@ -123,7 +125,7 @@ export default function Home({ initial }: { initial: any }) {
                 {hero.secondaryLabel}
               </a>
             </div>
-            <div className="mt-12 flex items-center gap-3 text-sm text-[#0b1b3d]/60">
+            <div className="mt-12 flex items-center gap-3 text-sm text-[#0b1b3d]/70">
               <div className="flex -space-x-2">
                 <div className="grid size-8 place-items-center rounded-full border-2 border-[#f8f9fa] bg-[#6e0e14] text-xs font-bold text-white">P</div>
                 <div className="grid size-8 place-items-center rounded-full border-2 border-[#f8f9fa] bg-[#0a7e39] text-xs font-bold text-white">N</div>
@@ -135,11 +137,11 @@ export default function Home({ initial }: { initial: any }) {
           <div className="relative mx-auto w-full max-w-[560px]">
             <div className="absolute -right-5 -top-5 z-10 rounded-2xl border border-white/70 bg-white/90 p-4 shadow-xl backdrop-blur">
               <div className="text-2xl font-black text-[#0a7e39]">{hero.statValue}</div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-[#0b1b3d]/50">{hero.statLabel}</div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-[#0b1b3d]/75">{hero.statLabel}</div>
             </div>
             <div className="relative overflow-hidden rounded-[34px] bg-[#0b1b3d] p-3 shadow-2xl shadow-[#0b1b3d]/20">
               <div className="rounded-[26px] border border-white/10 bg-gradient-to-br from-[#17305e] to-[#0b1b3d] px-7 pb-8 pt-10 sm:px-12 sm:pt-14">
-                <div className="mb-12 flex items-center justify-between text-white/50">
+                <div className="mb-12 flex items-center justify-between text-white/65">
                   <span className="text-xs font-bold uppercase tracking-[0.2em]">NBA / Advisory brief</span>
                   <span className="text-xs">2024—25</span>
                 </div>
@@ -160,7 +162,7 @@ export default function Home({ initial }: { initial: any }) {
               </div>
             </div>
             <div className="absolute -bottom-5 -left-4 rounded-2xl border border-[#0b1b3d]/10 bg-white p-4 shadow-xl">
-              <div className="flex items-center gap-2 text-xs font-bold text-[#0b1b3d]/60"><Check className="size-4 text-[#0a7e39]" /> Built for long-term value</div>
+              <div className="flex items-center gap-2 text-xs font-bold text-[#0b1b3d]/70"><Check className="size-4 text-[#0a7e39]" /> Built for long-term value</div>
             </div>
           </div>
         </section>
@@ -172,7 +174,7 @@ export default function Home({ initial }: { initial: any }) {
             {achievements.map((a: any) => (
               <div key={a.id || a.label} className="px-4 text-center sm:text-left">
                 <div className="text-3xl font-black">{a.value}</div>
-                <div className="mt-1 text-xs font-semibold uppercase tracking-wider text-[#0b1b3d]/50">{a.label}</div>
+                <div className="mt-1 text-xs font-semibold uppercase tracking-wider text-[#0b1b3d]/75">{a.label}</div>
               </div>
             ))}
           </div>
@@ -194,10 +196,10 @@ export default function Home({ initial }: { initial: any }) {
                 <article key={s.id || s.title} className="group rounded-3xl border border-[#0b1b3d]/10 bg-white p-7 transition-all hover:-translate-y-1 hover:border-[#0a7e39]/40 hover:shadow-xl hover:shadow-[#0b1b3d]/5">
                   <div className="flex items-start justify-between">
                     <div className="grid size-12 place-items-center rounded-2xl bg-[#0b1b3d] text-white transition-colors group-hover:bg-[#0a7e39]"><Icon className="size-5" /></div>
-                    <span className="text-sm font-bold text-[#0b1b3d]/30">{String(i + 1).padStart(2, '0')}</span>
+                    <span className="text-sm font-bold text-[#0b1b3d]/70">{String(i + 1).padStart(2, '0')}</span>
                   </div>
                   <h3 className="mt-12 text-2xl font-black">{s.title}</h3>
-                  <p className="mt-3 max-w-sm text-sm leading-7 text-[#0b1b3d]/60">{s.summary || s.text}</p>
+                  <p className="mt-3 max-w-sm text-sm leading-7 text-[#0b1b3d]/70">{s.summary || s.text}</p>
                   <a href="#contact" className="mt-7 inline-flex items-center text-sm font-bold text-[#0a7e39]">Talk to an advisor <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" /></a>
                 </article>
               )
@@ -222,7 +224,7 @@ export default function Home({ initial }: { initial: any }) {
                 <div key={s.id || s.title} className="rounded-3xl border border-white/10 bg-white/5 p-6">
                   <div className="mb-16 text-4xl font-black text-[#7bc497]">{String(i + 1).padStart(2, '0')}</div>
                   <h3 className="font-bold">{s.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-white/50">{s.text}</p>
+                  <p className="mt-3 text-sm leading-6 text-white/65">{s.text}</p>
                 </div>
               ))}
             </div>
@@ -234,7 +236,7 @@ export default function Home({ initial }: { initial: any }) {
         <section id="director" className="mx-auto max-w-7xl px-5 py-24 lg:px-8">
           <div className="mb-4 text-xs font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.directorAndTeam.eyebrow}</div>
           <h2 className="text-4xl font-black tracking-[-0.04em] sm:text-5xl">{c.directorAndTeam.title}</h2>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-[#0b1b3d]/65">{c.directorAndTeam.subtitle}</p>
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-[#0b1b3d]/75">{c.directorAndTeam.subtitle}</p>
           <TeamSlider team={team} />
         </section>
       )}
@@ -247,7 +249,7 @@ export default function Home({ initial }: { initial: any }) {
             {gallery.map((g: any) => (
               <figure key={g.id || g.imageUrl} className="overflow-hidden rounded-3xl border border-[#0b1b3d]/10 bg-white">
                 <img src={g.imageUrl} alt={g.caption || 'Gallery image'} width="600" height="420" className="h-56 w-full object-cover" />
-                {g.caption && <figcaption className="px-5 py-4 text-sm text-[#0b1b3d]/60">{g.caption}</figcaption>}
+                {g.caption && <figcaption className="px-5 py-4 text-sm text-[#0b1b3d]/70">{g.caption}</figcaption>}
               </figure>
             ))}
           </div>
@@ -289,7 +291,7 @@ export default function Home({ initial }: { initial: any }) {
                   <div className="flex gap-1 text-[#0a7e39]">{[0, 1, 2, 3, 4].map((i) => <Star key={i} className="size-4 fill-current" />)}</div>
                   <p className="mt-4 text-lg leading-8 text-[#0b1b3d]/75">“{t.quote}”</p>
                   <div className="mt-6 font-bold">{t.clientName}</div>
-                  <div className="text-sm text-[#0b1b3d]/55">{t.company}</div>
+                  <div className="text-sm text-[#0b1b3d]/70">{t.company}</div>
                 </article>
               ))}
             </div>
@@ -306,7 +308,7 @@ export default function Home({ initial }: { initial: any }) {
               <a key={p.id || p.title} href={p.downloadUrl || '#contact'} className="group rounded-3xl border border-[#0b1b3d]/10 bg-white p-7 transition-all hover:-translate-y-1 hover:border-[#0a7e39]/40 hover:shadow-xl hover:shadow-[#0b1b3d]/5">
                 <div className="text-xs font-bold uppercase tracking-wider text-[#0a7e39]">{p.category}</div>
                 <h3 className="mt-4 text-xl font-black">{p.title}</h3>
-                <div className="mt-3 text-sm text-[#0b1b3d]/50">{p.publicationDate}</div>
+                <div className="mt-3 text-sm text-[#0b1b3d]/75">{p.publicationDate}</div>
                 <div className="mt-6 inline-flex items-center text-sm font-bold text-[#0a7e39]">Read / Download <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" /></div>
               </a>
             ))}
@@ -329,7 +331,7 @@ export default function Home({ initial }: { initial: any }) {
                       <span>{f.question}</span>
                       <ChevronDown className={`size-5 shrink-0 text-[#0a7e39] transition-transform ${activeFaq === index ? 'rotate-180' : ''}`} />
                     </button>
-                    {activeFaq === index && <p className="mt-3 max-w-2xl pr-8 text-sm leading-7 text-[#0b1b3d]/60">{f.answer}</p>}
+                    {activeFaq === index && <p className="mt-3 max-w-2xl pr-8 text-sm leading-7 text-[#0b1b3d]/70">{f.answer}</p>}
                   </div>
                 ))}
               </div>
@@ -344,7 +346,7 @@ export default function Home({ initial }: { initial: any }) {
             <div>
               <div className="mb-4 text-xs font-black uppercase tracking-[0.2em] text-[#6e0e14]">{contact.eyebrow}</div>
               <h2 className="text-4xl font-black tracking-[-0.04em] sm:text-5xl">{contact.title}</h2>
-              <p className="mt-5 max-w-md leading-7 text-[#0b1b3d]/60">{contact.subtitle}</p>
+              <p className="mt-5 max-w-md leading-7 text-[#0b1b3d]/70">{contact.subtitle}</p>
               <div className="mt-8 flex items-center gap-3 text-sm font-semibold">
                 <div className="grid size-10 place-items-center rounded-full bg-[#0a7e39] text-white"><FileCheck2 className="size-4" /></div>
                 {contact.note}
@@ -391,7 +393,7 @@ export default function Home({ initial }: { initial: any }) {
                   <span className="size-2 rounded-full bg-[#7bc497]" /> Stay ahead with NBA
                 </div>
                 <h2 className="max-w-xl text-3xl font-black leading-tight tracking-[-0.04em] sm:text-5xl">Plan today.<br /><span className="text-[#7bc497]">Prosper tomorrow.</span></h2>
-                <p className="mt-5 max-w-lg text-sm leading-7 text-white/55">{footer.note}</p>
+                <p className="mt-5 max-w-lg text-sm leading-7 text-white/70">{footer.note}</p>
                 <div className="mt-7 flex flex-wrap gap-3">
                   <a href="#contact" className="inline-flex items-center rounded-full bg-[#0a7e39] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#149a4c]">Start a conversation <ArrowRight className="ml-2 size-4" /></a>
                   <a href="#top" className="inline-flex items-center rounded-full border border-white/15 px-5 py-3 text-sm font-bold text-white/80 transition-colors hover:border-[#7bc497] hover:text-[#7bc497]">Back to top</a>
@@ -408,17 +410,16 @@ export default function Home({ initial }: { initial: any }) {
                 <div className="mt-2 text-xs font-bold uppercase tracking-[0.16em] text-[#7bc497]">{footer.tagline}</div>
               </div>
               <div className="text-sm text-white/60">
-                <div className="mb-2 text-xs font-black uppercase tracking-[0.18em] text-white/35">Visit us</div>
+                <div className="mb-2 text-xs font-black uppercase tracking-[0.18em] text-white/70">Visit us</div>
                 <div>{contact.address}</div>
-                <div className="mt-1">Buddhanagar, Kathmandu, Nepal</div>
               </div>
               <div className="text-sm text-white/60 sm:text-right">
-                <div className="mb-2 text-xs font-black uppercase tracking-[0.18em] text-white/35">Contact</div>
+                <div className="mb-2 text-xs font-black uppercase tracking-[0.18em] text-white/70">Contact</div>
                 <a href={`mailto:${contact.email}`} className="transition-colors hover:text-[#7bc497]">{contact.email}</a>
                 <div className="mt-1">{contact.phone}</div>
               </div>
             </div>
-            <div className="mt-10 flex flex-col gap-2 border-t border-white/10 pt-5 text-xs text-white/30 sm:flex-row sm:items-center sm:justify-between">
+            <div className="mt-10 flex flex-col gap-2 border-t border-white/10 pt-5 text-xs text-white/70 sm:flex-row sm:items-center sm:justify-between">
               <span>{footer.copyright}</span>
               <span>Financial clarity for the next move.</span>
             </div>
@@ -476,7 +477,7 @@ function TeamSlider({ team }: { team: any[] }) {
             {m.imageUrl && <img src={m.imageUrl} alt={m.name} width="80" height="80" className="mb-5 size-20 object-contain" />}
             <h3 className="text-xl font-black">{m.name}</h3>
             <div className="mt-1 text-sm font-bold text-[#0a7e39]">{m.title}</div>
-            <p className="mt-3 text-sm leading-7 text-[#0b1b3d]/60">{m.bio}</p>
+            <p className="mt-3 text-sm leading-7 text-[#0b1b3d]/70">{m.bio}</p>
           </article>
         ))}
       </div>
@@ -504,7 +505,7 @@ function Notice({ popup }: { popup: any }) {
         <button type="button" onClick={() => setOpen(false)} className="absolute right-4 top-4 rounded-full bg-[#0b1b3d]/5 p-2" aria-label="Close"><X className="size-5" /></button>
         <div className="text-xs font-black uppercase tracking-[0.2em] text-[#6e0e14]">NBA update</div>
         <h2 className="mt-3 text-2xl font-black">{popup.title}</h2>
-        <p className="mt-3 leading-7 text-[#0b1b3d]/65">{popup.message}</p>
+        <p className="mt-3 leading-7 text-[#0b1b3d]/75">{popup.message}</p>
         <a href={popup.documentUrl} onClick={() => { try { sessionStorage.setItem('nba_notice', 'seen') } catch {} }} className="mt-6 inline-flex items-center rounded-full bg-[#0a7e39] px-5 py-3 text-sm font-bold text-white">
           {popup.buttonLabel} <ArrowRight className="ml-2 size-4" />
         </a>

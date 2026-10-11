@@ -113,7 +113,7 @@ app.post('/api/content', async (request, response) => {
   try {
     const clientRev = request.get('X-Content-Rev')
     if (!clientRev || clientRev !== contentRev()) {
-      return response.status(409).json({ ok: false, conflict: true, error: 'Content changed elsewhere (or a stale tab). Reload before saving.', content: readContent() })
+      return response.status(409).set('X-Content-Rev', contentRev()).json({ ok: false, conflict: true, error: 'Content changed elsewhere (or a stale tab). Reload before saving.', content: readContent() })
     }
     writeContent(request.body)
     const deploy = request.body.gitDeploy === false ? { ok: true, skipped: true, message: 'Saved locally (deploy skipped).' } : await gitDeploy('Update NBA content via local CMS')
