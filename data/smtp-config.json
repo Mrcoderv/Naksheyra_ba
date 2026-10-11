@@ -1,0 +1,12 @@
+{
+  "host": "smtp.gmail.com",
+  "port": 587,
+  "secure": false,
+  "user": "raghavp791@gmail.com",
+  "pass": "ChangeMe123!",
+  "fromName": "nakshytra",
+  "fromEmail": "raghavp791@gmail.com",
+  "recipients": [
+    "raghavap.339@gmail.com"
+  ]
+}
