@@ -380,14 +380,14 @@ export default function Home({ initial }: { initial: any }) {
         </section>
       )}
 
-      {show(c.footer) && (
-        <footer className="bg-[#0b1b3d] px-5 py-10 text-white lg:px-8">
-          <div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 sm:flex-row sm:items-end">
-            <div>
-              <div className="text-lg font-black tracking-[0.12em]">{BRAND_NAME}</div>
-              <div className="mt-1 text-xs font-bold tracking-[0.16em] text-[#7bc497]">{footer.tagline}</div>
-              <p className="mt-5 text-sm text-white/50">{footer.note}</p>
-            </div>
+  {show(c.footer) && (
+<footer className="bg-[#0b1b3d] px-5 py-10 text-white lg:px-8">
+  <div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 sm:flex-row sm:items-end">
+  <div>
+  <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-oSevCPzA9mmAzl01q1DySMqNmpl3Cg.png" alt="Nakshatra Business Advisory — Plan Today. Prosper Tomorrow." width="1600" height="900" className="w-full max-w-xl rounded-2xl object-cover" />
+  <div className="mt-5 text-xs font-bold tracking-[0.16em] text-[#7bc497]">{footer.tagline}</div>
+  <p className="mt-5 text-sm text-white/50">{footer.note}</p>
+  </div>
             <div className="text-left text-sm text-white/55 sm:text-right">
               <div>{contact.address}</div>
               <div className="mt-2">{contact.email}</div>
