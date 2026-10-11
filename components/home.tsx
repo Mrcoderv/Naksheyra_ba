@@ -194,7 +194,7 @@ export default function Home({ initial }: { initial: any }) {
         <section id="services" className="mx-auto max-w-7xl px-5 py-24 lg:px-8">
           <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <div>
-              <div className="mb-4 nba-eyebrow text-[13px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.services.eyebrow}</div>
+              <div className="mb-4 nba-eyebrow text-[39px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.services.eyebrow}</div>
               <h2 className="max-w-xl text-4xl font-black tracking-[-0.04em] sm:text-5xl">{c.services.title}</h2>
             </div>
           </div>
@@ -243,7 +243,7 @@ export default function Home({ initial }: { initial: any }) {
 
       {show(c.directorAndTeam) && team.length > 0 && (
         <section id="director" className="mx-auto max-w-7xl px-5 py-24 lg:px-8">
-          <div className="mb-4 nba-eyebrow text-[13px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.directorAndTeam.eyebrow}</div>
+          <div className="mb-4 nba-eyebrow text-[39px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.directorAndTeam.eyebrow}</div>
           <h2 className="text-4xl font-black tracking-[-0.04em] sm:text-5xl">{c.directorAndTeam.title}</h2>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-[#0b1b3d]/75">{c.directorAndTeam.subtitle}</p>
           <TeamSlider team={team} />
@@ -252,7 +252,7 @@ export default function Home({ initial }: { initial: any }) {
 
       {show(c.gallery) && gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-5 pb-24 lg:px-8">
-          <div className="mb-4 nba-eyebrow text-[13px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.gallery.eyebrow}</div>
+          <div className="mb-4 nba-eyebrow text-[39px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.gallery.eyebrow}</div>
           <h2 className="mb-10 text-4xl font-black tracking-[-0.04em] sm:text-5xl">{c.gallery.title}</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {gallery.map((g: any) => (
@@ -267,7 +267,7 @@ export default function Home({ initial }: { initial: any }) {
 
       {show(c.highlightedVideo) && videos.length > 0 && (
         <section id="insights" className="mx-auto max-w-7xl px-5 pb-24 lg:px-8">
-          <div className="mb-4 nba-eyebrow text-[13px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.highlightedVideo.eyebrow}</div>
+          <div className="mb-4 nba-eyebrow text-[39px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.highlightedVideo.eyebrow}</div>
           <h2 className="mb-10 text-4xl font-black tracking-[-0.04em] sm:text-5xl">{c.highlightedVideo.title}</h2>
           <div className="grid gap-8">
             {videos.map((v: any) => (
@@ -292,7 +292,7 @@ export default function Home({ initial }: { initial: any }) {
       {show(c.testimonials) && testimonials.length > 0 && (
         <section className="bg-white px-5 py-24 lg:px-8">
           <div className="mx-auto max-w-7xl">
-            <div className="mb-4 nba-eyebrow text-[13px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.testimonials.eyebrow}</div>
+            <div className="mb-4 nba-eyebrow text-[39px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.testimonials.eyebrow}</div>
             <h2 className="mb-10 text-4xl font-black tracking-[-0.04em] sm:text-5xl">{c.testimonials.title}</h2>
             <div className="grid gap-4 sm:grid-cols-2">
               {testimonials.map((t: any) => (
@@ -310,7 +310,7 @@ export default function Home({ initial }: { initial: any }) {
 
       {show(c.posts) && posts.length > 0 && (
         <section className="mx-auto max-w-7xl px-5 py-24 lg:px-8">
-          <div className="mb-4 nba-eyebrow text-[13px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.posts.eyebrow}</div>
+          <div className="mb-4 nba-eyebrow text-[39px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.posts.eyebrow}</div>
           <h2 className="mb-10 text-4xl font-black tracking-[-0.04em] sm:text-5xl">{c.posts.title}</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {posts.map((p: any) => (
@@ -330,7 +330,7 @@ export default function Home({ initial }: { initial: any }) {
           <div className="mx-auto max-w-7xl">
             <div className="grid gap-12 lg:grid-cols-[.8fr_1.2fr]">
               <div>
-                <div className="mb-4 nba-eyebrow text-[13px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.faqs.eyebrow}</div>
+                <div className="mb-4 nba-eyebrow text-[39px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.faqs.eyebrow}</div>
                 <h2 className="text-4xl font-black tracking-tight">{c.faqs.title}</h2>
               </div>
               <div className="divide-y divide-[#0b1b3d]/10 border-y border-[#0b1b3d]/10">
@@ -353,7 +353,7 @@ export default function Home({ initial }: { initial: any }) {
         <section id="contact" className="bg-[#e8eee9] px-5 py-24 lg:px-8">
           <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
             <div>
-              <div className="mb-4 nba-eyebrow text-[13px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{contact.eyebrow}</div>
+              <div className="mb-4 nba-eyebrow text-[39px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{contact.eyebrow}</div>
               <h2 className="text-4xl font-black tracking-[-0.04em] sm:text-5xl">{contact.title}</h2>
               <p className="mt-5 max-w-md leading-7 text-[#0b1b3d]/70">{contact.subtitle}</p>
               <div className="mt-8 flex items-center gap-3 text-sm font-semibold">
@@ -563,7 +563,7 @@ function Notice({ popup }: { popup: any }) {
     <div className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-[#0b1b3d]/70 p-5 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label={popup.title}>
       <div className="relative my-auto w-full max-w-md rounded-3xl bg-white p-8 shadow-2xl">
         <button type="button" onClick={() => setOpen(false)} className="absolute right-4 top-4 rounded-full bg-[#0b1b3d]/5 p-2" aria-label="Close"><X className="size-5" /></button>
-        <div className="nba-eyebrow text-[13px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">NBA update</div>
+        <div className="nba-eyebrow text-[39px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">NBA update</div>
         <h2 className="mt-3 text-2xl font-black">{popup.title}</h2>
         <p className="mt-3 leading-7 text-[#0b1b3d]/75">{popup.message}</p>
         {doc && (isPdf || isImg) && (
