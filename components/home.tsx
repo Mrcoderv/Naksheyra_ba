@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
 import {
   ArrowRight,
   BarChart3,
@@ -24,7 +23,7 @@ import {
 
 const serviceIcons = [BarChart3, Calculator, ShieldCheck, BriefcaseBusiness, Landmark, Sparkles]
 const BRAND_NAME = 'NAKSHATRA'
-const BRAND_LOGO = '/nakshatra-logo.png'
+const BRAND_LOGO = 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Maroon%20Star%20Growth%20Arrow%20Icon-wiPJK5PrDtlKyWuEiJeY0iHxo2S8C5.png'
 const on = (list: any[]) => (Array.isArray(list) ? list.filter((x) => x && x.enabled !== false) : [])
 const show = (section: any) => !!section && section.enabled !== false
 
@@ -66,7 +65,7 @@ export default function Home({ initial }: { initial: any }) {
   const footer = c.footer || {}
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#f8f9fa] text-[#0b1b3d]">
+    <main className="luxury-site min-h-screen overflow-hidden bg-[#0b0f19] text-slate-100">
       {show(c.topBar) && (
         <div className="bg-[#0b1b3d] px-5 py-2 text-center text-[11px] font-semibold tracking-[0.16em] text-white/80 sm:text-xs">
           {c.topBar.text}
@@ -76,7 +75,7 @@ export default function Home({ initial }: { initial: any }) {
       <header className="sticky top-0 z-40 border-b border-[#0b1b3d]/10 bg-[#f8f9fa]/95 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
           <a href="#top" className="flex items-center gap-3" aria-label="Nakshatra Business Advisory home">
-            <Image src={BRAND_LOGO} alt={`${BRAND_NAME} logo`} width={72} height={52} className="h-12 w-auto object-contain" unoptimized />
+            <img src={BRAND_LOGO} alt={`${BRAND_NAME} logo`} width="72" height="52" className="h-12 w-auto object-contain" />
             <div className="hidden border-l border-[#0b1b3d]/15 pl-3 sm:block">
               <div className="text-[13px] font-extrabold tracking-[0.18em]">{BRAND_NAME}</div>
               <div className="text-[9px] font-bold tracking-[0.16em] text-[#6e0e14]">{brand.tagline}</div>
@@ -247,7 +246,7 @@ export default function Home({ initial }: { initial: any }) {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {gallery.map((g: any) => (
               <figure key={g.id || g.imageUrl} className="overflow-hidden rounded-3xl border border-[#0b1b3d]/10 bg-white">
-                <Image src={g.imageUrl} alt={g.caption || 'Gallery image'} width={600} height={420} className="h-56 w-full object-cover" unoptimized />
+                <img src={g.imageUrl} alt={g.caption || 'Gallery image'} width="600" height="420" className="h-56 w-full object-cover" />
                 {g.caption && <figcaption className="px-5 py-4 text-sm text-[#0b1b3d]/60">{g.caption}</figcaption>}
               </figure>
             ))}
@@ -382,17 +381,46 @@ export default function Home({ initial }: { initial: any }) {
       )}
 
       {show(c.footer) && (
-        <footer className="bg-[#0b1b3d] px-5 py-10 text-white lg:px-8">
-          <div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 sm:flex-row sm:items-end">
-            <div>
-              <div className="text-lg font-black tracking-[0.12em]">{BRAND_NAME}</div>
-              <div className="mt-1 text-xs font-bold tracking-[0.16em] text-[#7bc497]">{footer.tagline}</div>
-              <p className="mt-5 text-sm text-white/50">{footer.note}</p>
+        <footer className="relative overflow-hidden border-t border-white/10 bg-[#07152f] px-5 pb-6 pt-16 text-white lg:px-8">
+          <div className="pointer-events-none absolute -right-32 -top-32 size-96 rounded-full bg-[#0a7e39]/15 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-48 -left-32 size-96 rounded-full bg-[#6e0e14]/20 blur-3xl" />
+          <div className="relative mx-auto max-w-7xl">
+            <div className="grid gap-10 lg:grid-cols-[1.15fr_.85fr] lg:items-center">
+              <div>
+                <div className="mb-5 inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.24em] text-[#7bc497]">
+                  <span className="size-2 rounded-full bg-[#7bc497]" /> Stay ahead with NBA
+                </div>
+                <h2 className="max-w-xl text-3xl font-black leading-tight tracking-[-0.04em] sm:text-5xl">Plan today.<br /><span className="text-[#7bc497]">Prosper tomorrow.</span></h2>
+                <p className="mt-5 max-w-lg text-sm leading-7 text-white/55">{footer.note}</p>
+                <div className="mt-7 flex flex-wrap gap-3">
+                  <a href="#contact" className="inline-flex items-center rounded-full bg-[#0a7e39] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#149a4c]">Start a conversation <ArrowRight className="ml-2 size-4" /></a>
+                  <a href="#top" className="inline-flex items-center rounded-full border border-white/15 px-5 py-3 text-sm font-bold text-white/80 transition-colors hover:border-[#7bc497] hover:text-[#7bc497]">Back to top</a>
+                </div>
+              </div>
+              <div className="overflow-hidden rounded-[28px] border border-white/15 bg-white/5 p-2 shadow-2xl shadow-black/20">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-oSevCPzA9mmAzl01q1DySMqNmpl3Cg.png" alt="Nakshatra Business Advisory — Plan Today. Prosper Tomorrow." width="1600" height="900" className="h-auto w-full rounded-[22px] object-cover" />
+              </div>
             </div>
-            <div className="text-left text-sm text-white/55 sm:text-right">
-              <div>{contact.address}</div>
-              <div className="mt-2">{contact.email}</div>
-              <div className="mt-6 text-xs text-white/30">{footer.copyright}</div>
+            <div className="my-12 h-px bg-white/10" />
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-[1fr_auto_auto] lg:items-start">
+              <div>
+                <div className="text-lg font-black tracking-[0.12em]">NAKSHATRA</div>
+                <div className="mt-2 text-xs font-bold uppercase tracking-[0.16em] text-[#7bc497]">{footer.tagline}</div>
+              </div>
+              <div className="text-sm text-white/60">
+                <div className="mb-2 text-xs font-black uppercase tracking-[0.18em] text-white/35">Visit us</div>
+                <div>{contact.address}</div>
+                <div className="mt-1">Buddhanagar, Kathmandu, Nepal</div>
+              </div>
+              <div className="text-sm text-white/60 sm:text-right">
+                <div className="mb-2 text-xs font-black uppercase tracking-[0.18em] text-white/35">Contact</div>
+                <a href={`mailto:${contact.email}`} className="transition-colors hover:text-[#7bc497]">{contact.email}</a>
+                <div className="mt-1">{contact.phone}</div>
+              </div>
+            </div>
+            <div className="mt-10 flex flex-col gap-2 border-t border-white/10 pt-5 text-xs text-white/30 sm:flex-row sm:items-center sm:justify-between">
+              <span>{footer.copyright}</span>
+              <span>Financial clarity for the next move.</span>
             </div>
           </div>
         </footer>
@@ -445,7 +473,7 @@ function TeamSlider({ team }: { team: any[] }) {
             key={m.id || m.name}
             className="w-full shrink-0 snap-start rounded-3xl border border-[#0b1b3d]/10 bg-white p-7 sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]"
           >
-            {m.imageUrl && <Image src={m.imageUrl} alt={m.name} width={80} height={80} className="mb-5 size-20 object-contain" unoptimized />}
+            {m.imageUrl && <img src={m.imageUrl} alt={m.name} width="80" height="80" className="mb-5 size-20 object-contain" />}
             <h3 className="text-xl font-black">{m.name}</h3>
             <div className="mt-1 text-sm font-bold text-[#0a7e39]">{m.title}</div>
             <p className="mt-3 text-sm leading-7 text-[#0b1b3d]/60">{m.bio}</p>
