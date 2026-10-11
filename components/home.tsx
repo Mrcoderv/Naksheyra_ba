@@ -140,7 +140,15 @@ export default function Home({ initial }: { initial: any }) {
               <div className="text-[10px] font-bold uppercase tracking-wider text-[#0b1b3d]/75">{hero.statLabel}</div>
             </div>
             <div className="relative overflow-hidden rounded-[34px] bg-[#0b1b3d] p-3 shadow-2xl shadow-[#0b1b3d]/20">
-              <div className="rounded-[26px] border border-white/10 bg-gradient-to-br from-[#17305e] to-[#0b1b3d] px-7 pb-8 pt-10 sm:px-12 sm:pt-14">
+              <div
+                id="nbaAdvisoryPanel"
+                className="relative rounded-[26px] border border-white/10 px-7 pb-8 pt-10 sm:px-12 sm:pt-14"
+                style={{
+                  backgroundImage: 'linear-gradient(150deg, rgba(23,48,94,.82), rgba(11,27,61,.93)), url(/eyeimage.png)',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+              >
                 <div className="mb-12 flex items-center justify-between text-white/65">
                   <span className="text-xs font-bold uppercase tracking-[0.2em]">NBA / Advisory brief</span>
                   <span className="text-xs">2024—25</span>

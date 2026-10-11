@@ -119,6 +119,7 @@ section > div { animation: fade-up 0.7s ease both; }
 .luxury-site [class*="text-[#0b1b3d]/30"], .luxury-site [class*="text-[#0b1b3d]/50"], .luxury-site [class*="text-[#0b1b3d]/55"] { color: rgba(20,34,56,.72) !important; }
 .luxury-site [class*="text-white/30"], .luxury-site [class*="text-white/35"] { color: rgba(255,255,255,.66) !important; }
 .luxury-site footer { background: var(--nba-ink) !important; border-top: 1px solid rgba(255,255,255,.12); }
+#nbaAdvisoryPanel { background-image: linear-gradient(150deg, rgba(23,48,94,.82), rgba(11,27,61,.93)), url('/eyeimage.png') !important; background-size: cover !important; background-position: center !important; background-color: #0b1b3d !important; }
 .glass-card { background: rgba(255,253,249,.78); border: 1px solid rgba(20,34,56,.12); backdrop-filter: blur(18px); box-shadow: 0 18px 50px rgba(20,34,56,.08); }
 .text-gradient-gold { color: var(--nba-green); }
 
