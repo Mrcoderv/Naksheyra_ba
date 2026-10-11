@@ -247,9 +247,9 @@
     "note": "No obligation. Just a useful first conversation.",
     "email": "hello@nakshatraba.com",
     "phone": "+977-1-0000000",
-  "address": "Buddhanagar, Kathmandu, Nepal",
-  "mapTitle": "Nakshatra Business Advisory location in Buddhanagar, Kathmandu",
-  "mapUrl": "https://www.google.com/maps?q=Buddhanagar%2C+Kathmandu%2C+Nepal&output=embed"
+    "address": "Buddhanagar, Kathmandu, Nepal",
+    "mapTitle": "Nakshatra Business Advisory location in Buddhanagar, Kathmandu",
+    "mapUrl": "https://www.google.com/maps?q=Buddhanagar%2C+Kathmandu%2C+Nepal&output=embed"
   },
   "footer": {
     "enabled": true,
@@ -266,7 +266,7 @@
     "ogImage": "/nakshatra-logo.png"
   },
   "notificationPopup": {
-    "enabled": true,
+    "enabled": false,
     "title": "Plan with confidence",
     "message": "Download our complimentary business planning checklist and prepare your next move.",
     "buttonLabel": "Download checklist",
