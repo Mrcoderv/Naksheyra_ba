@@ -144,9 +144,10 @@ export default function Home({ initial }: { initial: any }) {
                 id="nbaAdvisoryPanel"
                 className="relative rounded-[26px] border border-white/10 px-7 pb-8 pt-10 sm:px-12 sm:pt-14"
                 style={{
-                  backgroundImage: 'linear-gradient(150deg, rgba(23,48,94,.82), rgba(11,27,61,.93)), url(/eyeimage.png)',
-                  backgroundSize: 'cover',
+                  backgroundImage: 'linear-gradient(150deg, rgba(23,48,94,.6), rgba(11,27,61,.8)), url(/eyeimage.png)',
+                  backgroundSize: 'contain',
                   backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat',
                 }}
               >
                 <div className="mb-12 flex items-center justify-between text-white/65">
@@ -154,9 +155,9 @@ export default function Home({ initial }: { initial: any }) {
                   <span className="text-xs">2024—25</span>
                 </div>
                 <div className="mb-20">
-                  <div className="mb-5 text-sm font-semibold text-[#7bc497]">A clearer view forward</div>
+                  <div className="mb-5 text-sm font-semibold text-white/85">A clearer view forward</div>
                   <div className="max-w-sm text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl">
-                    Good advice makes growth feel <span className="text-[#7bc497]">possible.</span>
+                    Good advice makes growth feel <span>possible.</span>
                   </div>
                 </div>
                 <div className="flex items-end justify-between">

@@ -1,7 +1,11 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
+import { Inter, Fraunces } from 'next/font/google'
 import { getContent } from '@/lib/content'
 import './globals.css'
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans', display: 'swap' })
+const fraunces = Fraunces({ subsets: ['latin'], variable: '--font-display', display: 'swap' })
 
 export async function generateMetadata(): Promise<Metadata> {
   let seo: any = {}
@@ -44,7 +48,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">
+      <body className={`${inter.variable} ${fraunces.variable} antialiased`}>
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
