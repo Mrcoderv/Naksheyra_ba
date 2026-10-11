@@ -529,16 +529,33 @@ function Notice({ popup }: { popup: any }) {
     } catch {}
   }, [])
   if (!open) return null
+  const doc = String(popup.documentUrl || '')
+  const isPdf = /\.pdf(\?|#|$)/i.test(doc)
+  const isImg = /\.(png|jpe?g|webp|gif|avif)(\?|#|$)/i.test(doc)
   return (
-    <div className="fixed inset-0 z-50 grid place-items-center bg-[#0b1b3d]/70 p-5 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label={popup.title}>
-      <div className="relative w-full max-w-md rounded-3xl bg-white p-8 shadow-2xl">
+    <div className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-[#0b1b3d]/70 p-5 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label={popup.title}>
+      <div className="relative my-auto w-full max-w-md rounded-3xl bg-white p-8 shadow-2xl">
         <button type="button" onClick={() => setOpen(false)} className="absolute right-4 top-4 rounded-full bg-[#0b1b3d]/5 p-2" aria-label="Close"><X className="size-5" /></button>
         <div className="text-xs font-black uppercase tracking-[0.2em] text-[#6e0e14]">NBA update</div>
         <h2 className="mt-3 text-2xl font-black">{popup.title}</h2>
         <p className="mt-3 leading-7 text-[#0b1b3d]/75">{popup.message}</p>
-        <a href={popup.documentUrl} onClick={() => { try { sessionStorage.setItem('nba_notice', 'seen') } catch {} }} className="mt-6 inline-flex items-center rounded-full bg-[#0a7e39] px-5 py-3 text-sm font-bold text-white">
-          {popup.buttonLabel} <ArrowRight className="ml-2 size-4" />
-        </a>
+        {doc && (isPdf || isImg) && (
+          <div className="mt-5">
+            <div className="mb-2 text-[11px] font-black uppercase tracking-[0.18em] text-[#0b1b3d]/45">Preview</div>
+            <div className="overflow-hidden rounded-2xl border border-[#0b1b3d]/10 bg-[#f1f3f5]">
+              {isPdf ? (
+                <iframe src={`${doc}#toolbar=0&navpanes=0&view=FitH`} title="Document preview" loading="lazy" className="block h-60 w-full" />
+              ) : (
+                <img src={doc} alt="Document preview" loading="lazy" className="mx-auto block max-h-60 w-full bg-white object-contain" />
+              )}
+            </div>
+          </div>
+        )}
+        {doc && (
+          <a href={doc} target="_blank" rel="noopener" onClick={() => { try { sessionStorage.setItem('nba_notice', 'seen') } catch {} }} className="mt-6 inline-flex items-center rounded-full bg-[#0a7e39] px-5 py-3 text-sm font-bold text-white">
+            {popup.buttonLabel} <ArrowRight className="ml-2 size-4" />
+          </a>
+        )}
       </div>
     </div>
   )
