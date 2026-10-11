@@ -75,3 +75,47 @@ section > div { animation: fade-up 0.7s ease both; }
 @media (max-width: 640px) {
   section > div { animation: none; }
 }
+
+/* NBA luxury advisory system */
+.luxury-site {
+  --nba-ink: #0b0f19;
+  --nba-surface: #111827;
+  --nba-surface-2: #172033;
+  --nba-gold: #d4af37;
+  --nba-gold-bright: #f59e0b;
+  background: radial-gradient(circle at 78% 8%, rgba(212,175,55,.11), transparent 28rem), var(--nba-ink) !important;
+}
+.luxury-site > header { background: rgba(11,15,25,.78) !important; border-color: rgba(255,255,255,.1) !important; }
+.luxury-site > header a, .luxury-site > header nav, .luxury-site > header button { color: #f8fafc !important; }
+.luxury-site > header nav a:hover { color: var(--nba-gold-bright) !important; }
+.luxury-site > header a[href="#contact"] { background: linear-gradient(135deg,#f59e0b,#d4af37) !important; color: #1c1917 !important; }
+.luxury-site > header a[href="#contact"] svg { color: #1c1917 !important; }
+.luxury-site section, .luxury-site footer { position: relative; }
+.luxury-site section:not(#top):nth-of-type(even) { background: rgba(255,255,255,.025) !important; }
+.luxury-site section[id="top"] { min-height: 720px; }
+.luxury-site section[id="top"] h1 { color: #f8fafc; }
+.luxury-site section[id="top"] h1 span { background: linear-gradient(90deg,#fde68a,#f59e0b,#d4af37); -webkit-background-clip: text; background-clip: text; color: transparent !important; }
+.luxury-site section[id="top"] p, .luxury-site section[id="top"] > div > div:last-child { color: #94a3b8 !important; }
+.luxury-site section[id="top"] > div > div:first-child { border-color: rgba(245,158,11,.3) !important; background: rgba(245,158,11,.08) !important; color: #fbbf24 !important; }
+.luxury-site section[id="top"] a[href="#contact"], .luxury-site section[id="contact"] button { background: linear-gradient(135deg,#f59e0b,#d4af37) !important; color: #1c1917 !important; box-shadow: 0 18px 45px rgba(245,158,11,.2); }
+.luxury-site section[id="top"] a[href="#services"] { background: transparent !important; border-color: rgba(255,255,255,.2) !important; color: #f8fafc !important; }
+.luxury-site section[id="top"] a[href="#services"]:hover { background: rgba(255,255,255,.08) !important; border-color: rgba(245,158,11,.45) !important; }
+.luxury-site section[id="top"] > div:nth-child(2) > div:nth-child(2) { background: linear-gradient(145deg,#1c263b,#0f172a) !important; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+.luxury-site .bg-gradient-to-br { background: linear-gradient(145deg,#172033,#0b0f19) !important; color: #f8fafc !important; }
+.luxury-site section[id="top"] > div:nth-child(2) > div:first-child { background: rgba(17,24,39,.9) !important; border-color: rgba(245,158,11,.3) !important; }
+.luxury-site section[id="top"] > div:nth-child(2) > div:first-child div:first-child { color: #fbbf24 !important; }
+.luxury-site section[id="top"] > div:nth-child(2) > div:last-child { background: rgba(17,24,39,.9) !important; border-color: rgba(255,255,255,.12) !important; color: #cbd5e1 !important; }
+.luxury-site section[id="top"] > div:nth-child(2) > div:nth-child(2) span { color: #cbd5e1 !important; }
+.luxury-site section[id="top"] > div:nth-child(2) > div:nth-child(2) div:last-child { background: linear-gradient(135deg,#f59e0b,#d4af37) !important; color: #1c1917 !important; }
+.luxury-site section:not(#top) h2, .luxury-site section:not(#top) h3, .luxury-site section:not(#top) p, .luxury-site section:not(#top) div { }
+.luxury-site section:not(#top) { color: #f8fafc; }
+.luxury-site section:not(#top) [class*="text-[#6e0e14]"], .luxury-site section:not(#top) [class*="text-[#0a7e39]"], .luxury-site section:not(#top) [class*="text-[#7bc497]"] { color: #fbbf24 !important; }
+.luxury-site section:not(#top) article, .luxury-site section:not(#top) figure, .luxury-site section:not(#top) form, .luxury-site section:not(#top) [class*="bg-white"] { background: rgba(17,24,39,.72) !important; border-color: rgba(255,255,255,.1) !important; }
+.luxury-site section:not(#top) article, .luxury-site section:not(#top) figure { transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
+.luxury-site section:not(#top) article:hover, .luxury-site section:not(#top) figure:hover { transform: translateY(-6px); border-color: rgba(245,158,11,.4) !important; box-shadow: 0 24px 60px rgba(0,0,0,.25); }
+.luxury-site section:not(#top) [class*="bg-[#0b1b3d]"] { background: linear-gradient(145deg,#172033,#0b0f19) !important; }
+.luxury-site section:not(#top) input, .luxury-site section:not(#top) textarea { background: rgba(255,255,255,.04) !important; border-color: rgba(255,255,255,.14) !important; color: #f8fafc !important; }
+.luxury-site section:not(#top) input::placeholder, .luxury-site section:not(#top) textarea::placeholder { color: #64748b; }
+.luxury-site footer { background: #080b12 !important; border-top: 1px solid rgba(255,255,255,.1); }
+.glass-card { background: rgba(17,24,39,.68); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(24px); box-shadow: inset 0 1px rgba(255,255,255,.06), 0 24px 70px rgba(0,0,0,.18); }
+.text-gradient-gold { background: linear-gradient(90deg,#fde68a,#f59e0b,#d4af37); -webkit-background-clip:text; background-clip:text; color:transparent; }

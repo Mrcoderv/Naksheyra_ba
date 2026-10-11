@@ -66,7 +66,7 @@ export default function Home({ initial }: { initial: any }) {
   const footer = c.footer || {}
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#f8f9fa] text-[#0b1b3d]">
+    <main className="luxury-site min-h-screen overflow-hidden bg-[#0b0f19] text-slate-100">
       {show(c.topBar) && (
         <div className="bg-[#0b1b3d] px-5 py-2 text-center text-[11px] font-semibold tracking-[0.16em] text-white/80 sm:text-xs">
           {c.topBar.text}
