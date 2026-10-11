@@ -180,14 +180,14 @@
         "enabled": true,
         "quote": "NBA gave us the structure and confidence to make our next investment decision.",
         "clientName": "Raghav Panthi",
-        "company": "Growing enterprise, Kathmandu"
+        "company": "abc .com"
       },
       {
         "id": "testimonial-2",
         "enabled": true,
         "quote": "Clear advice, thoughtful questions, and practical actions our team could actually use.",
-        "clientName": "Founder",
-        "company": "Private business, Nepal"
+        "clientName": "niraj",
+        "company": "foody.com.np"
       }
     ]
   },
