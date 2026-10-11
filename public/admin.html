@@ -1,42 +1,287 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>NBA Content Studio</title><script src="https://cdn.tailwindcss.com"></script></head>
-<body class="min-h-screen bg-slate-100 text-[#0b1b3d]"><main class="mx-auto max-w-6xl p-5 md:p-10"><header class="mb-8 flex flex-wrap items-end justify-between gap-4"><div><p class="text-xs font-bold uppercase tracking-[.2em] text-[#6e0e14]">Nakshatra Business Advisory</p><h1 class="mt-2 text-4xl font-black">Content Studio</h1><p class="mt-2 text-slate-500">Every section is editable. Add, reorder or remove items, upload files, then save to publish.</p></div><div class="flex items-center gap-3"><a href="/" target="_blank" class="rounded-full bg-white px-5 py-3 font-bold shadow-sm">Preview site ↗</a><button id="reload" class="rounded-full bg-white px-5 py-3 font-bold shadow-sm">Reload</button><button id="save" class="rounded-full bg-[#0a7e39] px-6 py-3 font-bold text-white shadow-lg">Save &amp; deploy</button></div></header><div id="status" class="mb-6 hidden rounded-xl p-4 text-sm"></div><nav id="jump" class="mb-6 flex flex-wrap gap-2"></nav><section class="mb-6 max-w-full rounded-3xl bg-white p-6 shadow-sm"><div class="mb-4 flex flex-wrap items-center justify-between gap-4"><h2 class="text-xl font-black">GitHub repository</h2><span id="git-badge" class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-slate-500">checking…</span></div><div class="grid gap-3 md:grid-cols-2"><label class="block text-sm font-semibold">Repository URL<input id="git-url" placeholder="https://github.com/owner/repo.git" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 font-normal outline-none focus:border-[#0a7e39]"></label><label class="block text-sm font-semibold">Branch<input id="git-branch" value="main" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 font-normal outline-none focus:border-[#0a7e39]"></label></div><p id="git-info" class="mt-3 text-sm text-slate-500">Create an empty repository on GitHub, paste its URL here, then save and push.</p><div class="mt-4 flex flex-wrap gap-3"><button type="button" id="git-setup" class="rounded-full bg-[#0a7e39] px-5 py-3 font-bold text-white shadow-sm">Save repository</button><button type="button" id="git-push" class="rounded-full bg-white px-5 py-3 font-bold shadow-sm">Push now</button><button type="button" id="git-refresh" class="rounded-full bg-white px-5 py-3 font-bold shadow-sm">Refresh status</button></div></section><form id="cms" class="grid gap-6"></form></main><script>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-icon.png">
+<meta name="theme-color" content="#0b1b3d">
+<title>NBA Content Studio — Admin</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:9999px}
+  ::-webkit-scrollbar-thumb:hover{background:#94a3b8}
+  .fade-in{animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+  input[data-path],textarea[data-path]{transition:border-color .15s,box-shadow .15s}
+  input[data-path]:focus,textarea[data-path]:focus{box-shadow:0 0 0 3px rgba(10,126,57,.12)}
+</style>
+</head>
+<body class="min-h-screen bg-slate-100 text-[#0b1b3d]">
+<div class="flex min-h-screen">
+  <div id="overlay" class="fixed inset-0 z-30 hidden bg-[#0b1b3d]/50 lg:hidden"></div>
+  <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 flex w-72 -translate-x-full flex-col bg-[#0b1b3d] text-white transition-transform duration-200 lg:translate-x-0">
+    <div class="flex items-center gap-3 border-b border-white/10 px-5 py-5">
+      <img src="/nakshatra-logo.png" alt="NBA" class="h-10 w-auto object-contain">
+      <div class="leading-tight">
+        <div class="text-sm font-black tracking-[0.14em]">NAKSHATRA</div>
+        <div class="text-[10px] font-bold tracking-[0.18em] text-[#7bc497]">CONTENT STUDIO</div>
+      </div>
+    </div>
+    <nav id="nav" class="space-y-1 px-3 py-4"></nav>
+    <div class="px-5 pb-2 pt-4 text-[10px] font-bold uppercase tracking-[0.18em] text-white/35">Sections</div>
+    <div id="nav-sections" class="flex-1 space-y-0.5 overflow-y-auto px-3 pb-4"></div>
+    <div class="border-t border-white/10 p-3">
+      <a href="/" target="_blank" class="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold text-white/70 transition-colors hover:bg-white/10 hover:text-white">
+        <span data-icon="external"></span> View live site
+      </a>
+    </div>
+  </aside>
+
+  <div class="flex min-w-0 flex-1 flex-col lg:pl-72">
+    <header class="sticky top-0 z-20 flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-white/90 px-4 py-3 backdrop-blur md:px-8">
+      <div class="flex items-center gap-3">
+        <button id="menu-btn" class="grid size-10 place-items-center rounded-xl border border-slate-200 text-slate-600 lg:hidden"><span data-icon="menu"></span></button>
+        <div>
+          <h1 id="page-title" class="text-xl font-black leading-tight">Dashboard</h1>
+          <p id="page-sub" class="text-xs text-slate-400">Manage your website content</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span id="dirty" class="hidden items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-bold text-amber-700">● Unsaved changes</span>
+        <button data-reload class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-bold text-slate-600 transition-colors hover:bg-slate-50"><span data-icon="refresh"></span><span class="hidden sm:inline">Reload</span></button>
+        <a href="/" target="_blank" class="hidden items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-bold text-slate-600 transition-colors hover:bg-slate-50 sm:flex"><span data-icon="external"></span>Preview</a>
+        <button data-save class="flex items-center gap-2 rounded-xl bg-[#0a7e39] px-4 py-2.5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-[#0b6a31]"><span data-icon="save"></span><span data-save-label>Save &amp; deploy</span></button>
+      </div>
+    </header>
+
+    <main class="flex-1 p-4 md:p-8">
+      <section id="view-dashboard" class="view"></section>
+      <section id="view-content" class="view hidden"></section>
+      <section id="view-git" class="view hidden"></section>
+      <section id="view-backups" class="view hidden"></section>
+    </main>
+  </div>
+</div>
+<div id="toasts" class="fixed right-4 top-4 z-50 flex w-80 max-w-[calc(100vw-2rem)] flex-col gap-2"></div>
+
+<script>
 const labels={topBar:'Top bar',brand:'Brand',hero:'Hero',services:'Services',approach:'Our approach',directorAndTeam:'Director & team',achievements:'Achievements & metrics',highlightedVideo:'Highlighted video',gallery:'Gallery',testimonials:'Testimonials',posts:'Insights & guides',faqs:'FAQs',contact:'Contact',footer:'Footer',seo:'SEO & social',notificationPopup:'Notification popup'};
 const fieldLabels={logoUrl:'Logo image',imageUrl:'Image',documentUrl:'PDF document',embedUrl:'YouTube embed URL',primaryHref:'Primary button link',secondaryHref:'Secondary button link',ctaHref:'Button link',downloadUrl:'PDF document',clientName:'Client name',mapUrl:'Google Map embed URL',mapTitle:'Map title',members:'Team members'};
 const lockedPaths=new Set(['brand.name','brand.logoUrl','footer.brandName']);
-let content;
-let rev='';
+const titles={dashboard:['Dashboard','Overview of your site content'],content:['Content editor','Edit every section of the website'],git:['GitHub & deploy','Connect a repository and publish changes'],backups:['Backups','Restore a previous version of your content']};
+
+const icons={
+  dashboard:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/>',
+  file:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/>',
+  github:'<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>',
+  database:'<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>',
+  save:'<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>',
+  refresh:'<polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>',
+  external:'<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>',
+  menu:'<line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>',
+  chevron:'<polyline points="6 9 12 15 18 9"/>',
+  plus:'<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+  trash:'<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+  upload:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>',
+  search:'<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
+  x:'<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+  arrowUp:'<polyline points="18 15 12 9 6 15"/>',
+  arrowDown:'<polyline points="6 9 12 15 18 9"/>',
+  check:'<polyline points="20 6 9 17 4 12"/>',
+  alert:'<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
+  layers:'<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>',
+  users:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  image:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>',
+  message:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  helpCircle:'<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+  clock:'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+  hardDrive:'<line x1="22" y1="12" x2="2" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" y1="16" x2="6.01" y2="16"/><line x1="10" y1="16" x2="10.01" y2="16"/>'
+};
+const icon=(n,cls)=>`<svg class="${cls||'size-5'}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icons[n]||''}</svg>`;
+
+let content=null, rev='', dirty=false, view='dashboard', gitState={};
+const collapsed=new Set();
+
 const esc=v=>String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 const pretty=k=>fieldLabels[k]||k.replace(/([A-Z])/g,' $1').replace(/^./,c=>c.toUpperCase());
+const label=k=>labels[k]||pretty(k);
+const n=a=>Array.isArray(a)?a.length:0;
+
 function getPath(path){return path.split('.').reduce((t,p)=>t?.[p],content)}
 function setPath(path,value){const parts=path.split('.');const target=parts.slice(0,-1).reduce((t,p)=>t[p],content);target[parts.at(-1)]=value}
-function leaf(path,key,value){const isImage=/imageUrl$|logoUrl$|ogImage$/.test(key);const isPdf=/documentUrl$|downloadUrl$/.test(key);const wide=String(value).length>60;if(isPdf){const shown=value?`<a href="${esc(value)}" target="_blank" class="mt-2 block truncate text-sm font-normal text-[#0a7e39] underline">${esc(value)}</a>`:`<span class="mt-2 block text-sm font-normal text-slate-400">No document yet — upload a PDF.</span>`;return `<label class="md:col-span-2 block text-sm font-semibold">${esc(pretty(key))}${shown}<input type="file" data-upload="${path}" accept=".pdf" class="mt-2 block w-full text-sm"></label>`}const control=wide?`<textarea data-path="${path}" rows="2" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 font-normal outline-none focus:border-[#0a7e39]">${esc(value)}</textarea>`:`<input data-path="${path}" value="${esc(value)}" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 font-normal outline-none focus:border-[#0a7e39]">`;const upload=isImage?`<input type="file" data-upload="${path}" accept=".jpg,.jpeg,.png,.webp" class="mt-2 block w-full text-sm">`:'';const thumb=isImage&&value?`<img src="${esc(value)}" alt="" class="mt-2 h-16 w-auto rounded-lg border border-slate-200">`:'';return `<label class="${wide?'md:col-span-2 ':''}block text-sm font-semibold">${esc(pretty(key))}${control}${thumb}${upload}</label>`}
-function toggle(path,key,value){return `<label class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500"><input type="checkbox" data-path="${path}" ${value?'checked':''}> ${esc(pretty(key))}</label>`}
-function itemBody(path,item){if(item===null||typeof item!=='object')return `<div class="md:col-span-2">${leaf(path,'value',item)}</div>`;return Object.entries(item).filter(([k])=>!['id','enabled'].includes(k)).map(([k,v])=>Array.isArray(v)?`<div class="md:col-span-2">${list(path+'.'+k,k,v)}</div>`:typeof v==='object'&&v!==null?`<div class="md:col-span-2 rounded-xl border border-slate-200 p-4"><h4 class="mb-3 font-bold">${esc(pretty(k))}</h4><div class="grid gap-3 md:grid-cols-2">${object(path+'.'+k,v)}</div></div>`:typeof v==='boolean'?toggle(path+'.'+k,k,v):leaf(path+'.'+k,k,v)).join('')}
-function list(path,key,arr){const cards=arr.map((item,i)=>{const p=path+'.'+i;const title=esc(item&&item.name||item&&item.title||item&&item.value||item&&item.caption||item&&item.question||'Item '+(i+1));const enabled=item&&typeof item==='object'&&'enabled' in item?`<label class="text-xs"><input type="checkbox" data-path="${p}.enabled" ${item.enabled?'checked':''}> enabled</label>`:'';const moves=`<button type="button" data-move="${path}" data-index="${i}" data-dir="-1" class="rounded-md border border-slate-200 px-2 text-xs ${i===0?'opacity-30':'hover:bg-slate-100'}" ${i===0?'disabled':''} title="Move up">▲</button><button type="button" data-move="${path}" data-index="${i}" data-dir="1" class="rounded-md border border-slate-200 px-2 text-xs ${i===arr.length-1?'opacity-30':'hover:bg-slate-100'}" ${i===arr.length-1?'disabled':''} title="Move down">▼</button>`;return `<div class="rounded-2xl border border-slate-200 p-4"><div class="mb-3 flex justify-between gap-3"><strong>${title}</strong><div class="flex items-center gap-3">${moves}${enabled}<button type="button" data-remove="${path}" data-index="${i}" class="text-xs font-bold text-[#6e0e14]">Remove</button></div></div><div class="grid gap-3 md:grid-cols-2">${itemBody(p,item)}</div></div>`}).join('');return `<div class="grid gap-4">${cards}<button type="button" data-add="${path}" class="rounded-xl border-2 border-dashed border-slate-300 px-4 py-3 text-sm font-bold text-[#0a7e39]">+ Add ${esc(pretty(key).toLowerCase())}</button></div>`}
-function object(path,obj){return Object.entries(obj).filter(([k])=>!lockedPaths.has(path+'.'+k)).map(([k,v])=>v===null?'':Array.isArray(v)?`<div class="md:col-span-2">${list(path+'.'+k,k,v)}</div>`:typeof v==='object'?`<div class="md:col-span-2 rounded-xl border border-slate-200 p-4"><h3 class="mb-3 font-bold">${esc(pretty(k))}</h3><div class="grid gap-3 md:grid-cols-2">${object(path+'.'+k,v)}</div></div>`:typeof v==='boolean'?toggle(path+'.'+k,k,v):leaf(path+'.'+k,k,v)).join('')}
-function section(key){const data=content[key];const stamp=typeof data==='object'&&data&&'enabled' in data?`<label class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500"><input type="checkbox" data-path="${key}.enabled" ${data.enabled?'checked':''}> Visible</label>`:'';return `<section id="sec-${key}" class="max-w-full rounded-3xl bg-white p-6 shadow-sm"><div class="mb-5 flex items-center justify-between gap-4"><h2 class="text-xl font-black">${esc(labels[key]||pretty(key))}</h2>${stamp}</div><div class="grid gap-3 md:grid-cols-2">${object(key,data)}</div></section>`}
-function anchor(key){return `<a href="#sec-${key}" class="rounded-full bg-white px-3 py-1.5 text-xs font-bold shadow-sm">${esc(labels[key]||pretty(key))}</a>`}
+
+/* ---------- form builders ---------- */
+function leaf(path,key,value){const isImage=/imageUrl$|logoUrl$|ogImage$/.test(key);const isPdf=/documentUrl$|downloadUrl$/.test(key);const wide=String(value).length>60;const base='mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 font-normal text-slate-700 outline-none focus:border-[#0a7e39]';
+  if(isPdf){const shown=value?`<a href="${esc(value)}" target="_blank" class="mt-2 block truncate text-sm font-normal text-[#0a7e39] underline">${esc(value)}</a>`:`<span class="mt-2 block text-sm font-normal text-slate-400">No document yet — upload a PDF.</span>`;return `<label class="md:col-span-2 block text-sm font-semibold text-slate-600">${esc(pretty(key))}${shown}<span class="mt-2 inline-flex items-center gap-2 rounded-xl border border-dashed border-slate-300 px-3 py-2 text-xs font-bold text-slate-500">${icon('upload','size-4')} Upload PDF<input type="file" data-upload="${path}" accept=".pdf" class="sr-only"></span></label>`}
+  const control=wide?`<textarea data-path="${path}" rows="2" class="${base}">${esc(value)}</textarea>`:`<input data-path="${path}" value="${esc(value)}" class="${base}">`;
+  const upload=isImage?`<label class="mt-2 inline-flex cursor-pointer items-center gap-2 rounded-xl border border-dashed border-slate-300 px-3 py-2 text-xs font-bold text-slate-500 hover:border-[#0a7e39] hover:text-[#0a7e39]">${icon('upload','size-4')} Upload image<input type="file" data-upload="${path}" accept=".jpg,.jpeg,.png,.webp" class="sr-only"></label>`:'';
+  const thumb=isImage&&value?`<img src="${esc(value)}" alt="" class="mt-2 h-16 w-auto rounded-lg border border-slate-200">`:'';
+  return `<label class="${wide?'md:col-span-2 ':''}block text-sm font-semibold text-slate-600">${esc(pretty(key))}${control}${thumb}${upload}</label>`}
+function toggle(path,key,value){return `<label class="inline-flex cursor-pointer items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500"><input type="checkbox" data-path="${path}" ${value?'checked':''} class="size-4 rounded border-slate-300 text-[#0a7e39] focus:ring-[#0a7e39]"> ${esc(pretty(key))}</label>`}
+function itemBody(path,item){if(item===null||typeof item!=='object')return `<div class="md:col-span-2">${leaf(path,'value',item)}</div>`;return Object.entries(item).filter(([k])=>!['id','enabled'].includes(k)).map(([k,v])=>Array.isArray(v)?`<div class="md:col-span-2">${list(path+'.'+k,k,v)}</div>`:typeof v==='object'&&v!==null?`<div class="md:col-span-2 rounded-xl border border-slate-200 p-4"><h4 class="mb-3 text-sm font-bold text-slate-700">${esc(pretty(k))}</h4><div class="grid gap-3 md:grid-cols-2">${object(path+'.'+k,v)}</div></div>`:typeof v==='boolean'?toggle(path+'.'+k,k,v):leaf(path+'.'+k,k,v)).join('')}
+function list(path,key,arr){const cards=arr.map((item,i)=>{const p=path+'.'+i;
+  const title=esc(item&&item.name||item&&item.title||item&&item.value||item&&item.caption||item&&item.question||'Item '+(i+1));
+  const enabled=item&&typeof item==='object'&&'enabled' in item?`<label class="inline-flex cursor-pointer items-center gap-1.5 text-xs font-semibold text-slate-500"><input type="checkbox" data-path="${p}.enabled" ${item.enabled?'checked':''} class="size-4 rounded border-slate-300 text-[#0a7e39] focus:ring-[#0a7e39]"> Visible</label>`:'';
+  const moves=`<button type="button" data-move="${path}" data-index="${i}" data-dir="-1" class="grid size-7 place-items-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-100 disabled:opacity-30" ${i===0?'disabled':''} title="Move up">${icon('arrowUp','size-4')}</button><button type="button" data-move="${path}" data-index="${i}" data-dir="1" class="grid size-7 place-items-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-100 disabled:opacity-30" ${i===arr.length-1?'disabled':''} title="Move down">${icon('arrowDown','size-4')}</button>`;
+  return `<div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4"><div class="mb-3 flex flex-wrap items-center justify-between gap-3"><div class="flex items-center gap-2"><span class="grid size-7 place-items-center rounded-lg bg-[#0b1b3d] text-xs font-bold text-white">${i+1}</span><strong class="text-sm">${title}</strong></div><div class="flex items-center gap-2">${moves}${enabled}<button type="button" data-remove="${path}" data-index="${i}" class="grid size-7 place-items-center rounded-lg border border-red-200 text-red-500 hover:bg-red-50" title="Remove">${icon('trash','size-4')}</button></div></div><div class="grid gap-3 md:grid-cols-2">${itemBody(p,item)}</div></div>`}).join('');
+  return `<div class="grid gap-3">${cards}<button type="button" data-add="${path}" class="flex items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-slate-300 px-4 py-3 text-sm font-bold text-[#0a7e39] transition-colors hover:border-[#0a7e39] hover:bg-emerald-50">${icon('plus','size-4')} Add ${esc(pretty(key).toLowerCase())}</button></div>`}
+function object(path,obj){return Object.entries(obj).filter(([k])=>!lockedPaths.has(path+'.'+k)).map(([k,v])=>v===null?'':Array.isArray(v)?`<div class="md:col-span-2">${list(path+'.'+k,k,v)}</div>`:typeof v==='object'?`<div class="md:col-span-2 rounded-xl border border-slate-200 p-4"><h3 class="mb-3 text-sm font-bold text-slate-700">${esc(pretty(k))}</h3><div class="grid gap-3 md:grid-cols-2">${object(path+'.'+k,v)}</div></div>`:typeof v==='boolean'?toggle(path+'.'+k,k,v):leaf(path+'.'+k,k,v)).join('')}
+function section(key){const data=content[key];const isCollapsed=collapsed.has(key);
+  const stamp=typeof data==='object'&&data&&'enabled' in data?`<label class="inline-flex cursor-pointer items-center gap-2 text-xs font-bold uppercase tracking-wider ${data.enabled?'text-[#0a7e39]':'text-slate-400'}"><input type="checkbox" data-path="${key}.enabled" ${data.enabled?'checked':''} class="size-4 rounded border-slate-300 text-[#0a7e39] focus:ring-[#0a7e39]"> ${data.enabled?'Visible':'Hidden'}</label>`:'';
+  let count=0;if(data&&typeof data==='object'){for(const v of Object.values(data))if(Array.isArray(v)){count=v.length;break}}
+  return `<section id="sec-${key}" data-section="${key}" class="scroll-mt-24 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 px-4 py-3">
+      <div class="flex items-center gap-3">
+        <button type="button" data-collapse="${key}" class="grid size-8 place-items-center rounded-lg text-slate-400 hover:bg-slate-100">${icon('chevron','size-4 transition-transform '+(isCollapsed?'-rotate-90':''))}</button>
+        <div><h2 class="font-black leading-tight">${esc(label(key))}</h2>${count?`<p class="text-[11px] font-semibold text-slate-400">${count} item${count===1?'':'s'}</p>`:''}</div>
+      </div>${stamp}
+    </div>
+    <div id="body-${key}" class="${isCollapsed?'hidden':''} p-4 md:p-5"><div class="grid gap-3 md:grid-cols-2">${object(key,data)}</div></div>
+  </section>`}
+
+/* ---------- data ---------- */
 function blankFrom(item){if(!item||typeof item!=='object'||Array.isArray(item))return '';const out={};for(const [k,v] of Object.entries(item)){if(k==='id')continue;out[k]=k==='enabled'?true:typeof v==='boolean'?false:''}out.id='item-'+Date.now();return out}
-function addItem(path){const arr=getPath(path);arr.push(blankFrom(arr[0])||'');markDirty();render()}
-function removeItem(path,index){getPath(path).splice(index,1);markDirty();render()}
-function moveItem(path,index,dir){const arr=getPath(path);const to=index+dir;if(to<0||to>=arr.length)return;[arr[index],arr[to]]=[arr[to],arr[index]];markDirty();render()}
-let dirty=false;
-function markDirty(){dirty=true;const s=document.querySelector('#save');if(s)s.textContent='Save & deploy •'}
-function markClean(){dirty=false;const s=document.querySelector('#save');if(s)s.textContent='Save & deploy'}
-function render(){document.querySelector('#cms').innerHTML=Object.keys(content).map(section).join('');document.querySelector('#jump').innerHTML=Object.keys(content).map(anchor).join('')}
-document.querySelector('#cms').addEventListener('input',e=>{const el=e.target;if(!el.dataset.path)return;setPath(el.dataset.path,el.type==='checkbox'?el.checked:el.value);markDirty()});
-document.querySelector('#cms').addEventListener('click',e=>{const a=e.target.closest('[data-add]');if(a){addItem(a.dataset.add);return}const r=e.target.closest('[data-remove]');if(r){removeItem(r.dataset.remove,Number(r.dataset.index));return}const m=e.target.closest('[data-move]');if(m){moveItem(m.dataset.move,Number(m.dataset.index),Number(m.dataset.dir))}});
-document.querySelector('#cms').addEventListener('change',async e=>{const el=e.target;if(!el.dataset.upload||!el.files[0])return;const body=new FormData();body.append('file',el.files[0]);const result=await fetch('/api/upload',{method:'POST',body}).then(r=>r.json());if(result.ok){setPath(el.dataset.upload,result.url);markDirty();render();show('Upload complete. Save to publish it.',true)}else{show(result.error||'Upload failed.',false)}});
-function show(message,ok){const el=document.querySelector('#status');el.textContent=message;el.className=`mb-6 rounded-xl p-4 text-sm ${ok?'bg-emerald-100 text-emerald-800':'bg-red-100 text-red-800'}`}
-document.querySelector('#save').onclick=async()=>{const res=await fetch('/api/content',{method:'POST',headers:{'Content-Type':'application/json','X-Content-Rev':rev},body:JSON.stringify(content)});const result=await res.json();if(result.conflict){content=result.content;rev=res.headers.get('X-Content-Rev')||rev;markClean();render();show('Content changed elsewhere — reloaded latest. Review and save again.',false);return}if(result.ok){markClean();rev=res.headers.get('X-Content-Rev')||rev;const g=result.git||{};show('Saved. '+(g.message||'Deployed.'),true)}else{show('Error: '+result.error,false)}};
-document.querySelector('#reload').onclick=()=>{if(dirty&&!confirm('Discard unsaved changes?'))return;init()};
-if(typeof window!=='undefined')window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
-function gitBadge(text,ok){const b=document.querySelector('#git-badge');b.textContent=text;b.className=`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider ${ok?'bg-emerald-100 text-emerald-700':'bg-red-100 text-red-700'}`}
-async function gitRefresh(){try{const r=await fetch('/api/git').then(r=>r.json());const s=r.status||{};document.querySelector('#git-url').value=s.remote||'';document.querySelector('#git-branch').value=s.branch||'main';if(!s.isRepo){gitBadge('no repository',false);document.querySelector('#git-info').textContent='Not a git repository yet — saving will initialize one and add the remote.';return}if(!s.remote){gitBadge('no remote',false);document.querySelector('#git-info').textContent='Local repo has no origin remote. Paste your GitHub URL and save.';return}const flow=[s.ahead?`↑${s.ahead} ahead`:'',s.behind?`↓${s.behind} behind`:'',s.hasChanges?'uncommitted changes':'clean'].filter(Boolean).join(' · ');gitBadge('connected',true);document.querySelector('#git-info').textContent=`origin → ${s.remote} (${s.branch}) · ${flow}${s.lastCommit?` · last: ${s.lastCommit}`:''}`}catch{gitBadge('unavailable',false)}}
-document.querySelector('#git-refresh').onclick=gitRefresh;
-document.querySelector('#git-setup').onclick=async()=>{const url=document.querySelector('#git-url').value.trim();const branch=document.querySelector('#git-branch').value.trim()||'main';const result=await fetch('/api/git/setup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url,branch})}).then(r=>r.json());show(result.ok?(result.message||'Repository configured.'):('Error: '+(result.error||'Could not configure repository.')),!!result.ok);gitRefresh()};
-document.querySelector('#git-push').onclick=async()=>{const result=await fetch('/api/git/push',{method:'POST'}).then(r=>r.json());show(result.ok?(result.message||'Pushed.'):('Error: '+(result.message||result.error||'Push failed.')),!!result.ok);gitRefresh()};
-async function init(){const r=await fetch('/api/content');rev=r.headers.get('X-Content-Rev')||'';content=await r.json();markClean();render();gitRefresh()}
+function addItem(path){const arr=getPath(path);arr.push(blankFrom(arr[0])||'');markDirty();renderEditor();toast('Item added. Remember to save.','info')}
+function removeItem(path,index){if(!confirm('Remove this item?'))return;getPath(path).splice(index,1);markDirty();renderEditor()}
+function moveItem(path,index,dir){const arr=getPath(path);const to=index+dir;if(to<0||to>=arr.length)return;[arr[index],arr[to]]=[arr[to],arr[index]];markDirty();renderEditor()}
+function toggleCollapse(key){if(collapsed.has(key))collapsed.delete(key);else collapsed.add(key);const body=document.querySelector('#body-'+key);if(body)body.classList.toggle('hidden');const chev=document.querySelector('[data-collapse="'+key+'"] svg');if(chev)chev.classList.toggle('-rotate-90')}
+function filterSections(q){q=q.trim().toLowerCase();document.querySelectorAll('[data-section]').forEach(sec=>{const ok=!q||sec.dataset.section.toLowerCase().includes(q)||sec.textContent.toLowerCase().includes(q);sec.classList.toggle('hidden',!ok)})}
+
+/* ---------- status helpers ---------- */
+function markDirty(){dirty=true;document.querySelector('#dirty').classList.remove('hidden');document.querySelector('#dirty').classList.add('inline-flex');document.querySelectorAll('[data-save-label]').forEach(x=>x.textContent='Save & deploy •')}
+function markClean(){dirty=false;const d=document.querySelector('#dirty');d.classList.add('hidden');d.classList.remove('inline-flex');document.querySelectorAll('[data-save-label]').forEach(x=>x.textContent='Save & deploy')}
+function toast(message,type){const colors={success:'bg-emerald-600',error:'bg-red-600',info:'bg-[#0b1b3d]'};const el=document.createElement('div');el.className=`fade-in flex items-start gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-white shadow-lg ${colors[type]||colors.info}`;el.innerHTML=`${icon(type==='error'?'alert':type==='success'?'check':'clock','size-4 mt-0.5 shrink-0')}<span>${esc(message)}</span>`;document.querySelector('#toasts').appendChild(el);setTimeout(()=>{el.style.transition='opacity .3s';el.style.opacity='0';setTimeout(()=>el.remove(),300)},4000)}
+
+/* ---------- git ---------- */
+function gitBadge(){const s=gitState;if(!s.isRepo)return['No repository','bg-slate-100 text-slate-500'];if(!s.remote)return['No remote','bg-amber-100 text-amber-700'];return['Connected','bg-emerald-100 text-emerald-700']}
+function gitSummary(){const s=gitState;if(!s.isRepo)return 'Not a git repository yet — saving will initialize one.';if(!s.remote)return 'Local repository has no origin remote. Paste your GitHub URL below.';const flow=[s.ahead?`↑ ${s.ahead} ahead`:'',s.behind?`↓ ${s.behind} behind`:'',s.hasChanges?'uncommitted changes':'working tree clean'].filter(Boolean).join(' · ');return `${s.remote} · ${s.branch} · ${flow}`}
+function gitPanel(compact){const [text,cls]=gitBadge();return `
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div class="flex items-center gap-2"><span class="grid size-9 place-items-center rounded-xl bg-[#0b1b3d] text-white">${icon('github','size-5')}</span><strong>Origin remote</strong></div>
+    <span class="rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider ${cls}">${text}</span>
+  </div>
+  <p class="mt-3 text-sm text-slate-500">${esc(gitSummary())}${gitState.lastCommit?`<br><span class="text-xs text-slate-400">Last commit: ${esc(gitState.lastCommit)}</span>`:''}</p>
+  <div class="mt-4 grid gap-3 md:grid-cols-2">
+    <label class="block text-sm font-semibold text-slate-600">Repository URL<input id="git-url" value="${esc(gitState.remote||'')}" placeholder="https://github.com/owner/repo.git" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 font-normal outline-none focus:border-[#0a7e39]"></label>
+    <label class="block text-sm font-semibold text-slate-600">Branch<input id="git-branch" value="${esc(gitState.branch||'main')}" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 font-normal outline-none focus:border-[#0a7e39]"></label>
+  </div>
+  <div class="mt-4 flex flex-wrap gap-2">
+    <button type="button" data-git-setup class="flex items-center gap-2 rounded-xl bg-[#0a7e39] px-4 py-2.5 text-sm font-bold text-white hover:bg-[#0b6a31]">${icon('save','size-4')} Save repository</button>
+    <button type="button" data-git-push class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-50">${icon('upload','size-4')} Push now</button>
+    <button type="button" data-git-refresh class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-50">${icon('refresh','size-4')} Refresh</button>
+  </div>`}
+async function loadGit(){try{const r=await fetch('/api/git');gitState=(await r.json()).status||{}}catch{gitState={}}}
+async function refreshGitView(){await loadGit();if(view==='git')renderGit();if(view==='dashboard')renderDashboard()}
+async function gitSetup(){const url=document.querySelector('#git-url').value.trim();const branch=document.querySelector('#git-branch').value.trim()||'main';const r=await fetch('/api/git/setup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url,branch})}).then(r=>r.json());toast(r.ok?(r.message||'Repository configured.'):(r.error||'Could not configure repository.'),r.ok?'success':'error');refreshGitView()}
+async function gitPush(){const r=await fetch('/api/git/push',{method:'POST'}).then(r=>r.json());toast(r.ok?(r.message||'Pushed.'):(r.message||r.error||'Push failed.'),r.ok?'success':'error');refreshGitView()}
+
+/* ---------- backups ---------- */
+async function loadBackups(){try{const r=await fetch('/api/backups');return (await r.json()).backups||[]}catch{return[]}}
+async function doRestore(file){if(!confirm('Restore this backup? The current content will be replaced.'))return;const r=await fetch('/api/restore',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({file})}).then(r=>r.json());if(r.ok){await loadContent();toast('Backup restored.','success');reloadView()}else toast(r.error||'Restore failed.','error')}
+
+/* ---------- views ---------- */
+function statCard(label,value,ic,tone){return `<div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><div class="flex items-center justify-between"><span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">${label}</span><span class="grid size-9 place-items-center rounded-xl ${tone}">${icon(ic,'size-5')}</span></div><div class="mt-3 text-3xl font-black">${value}</div></div>`}
+async function renderDashboard(){const el=document.querySelector('#view-dashboard');
+  const counts={services:n(content?.services?.items),team:n(content?.directorAndTeam?.members),posts:n(content?.posts?.items),gallery:n(content?.gallery?.items),testimonials:n(content?.testimonials?.items),faqs:n(content?.faqs?.items)};
+  el.innerHTML=`
+    <div class="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      ${statCard('Sections',Object.keys(content||{}).length,'layers','bg-[#0b1b3d] text-white')}
+      ${statCard('Services',counts.services,'file','bg-emerald-50 text-[#0a7e39]')}
+      ${statCard('Team members',counts.team,'users','bg-emerald-50 text-[#0a7e39]')}
+      ${statCard('Insights & posts',counts.posts,'file','bg-amber-50 text-amber-600')}
+      ${statCard('Gallery images',counts.gallery,'image','bg-amber-50 text-amber-600')}
+      ${statCard('Testimonials',counts.testimonials,'message','bg-[#6e0e14]/10 text-[#6e0e14]')}
+      ${statCard('FAQs',counts.faqs,'helpCircle','bg-[#6e0e14]/10 text-[#6e0e14]')}
+      ${statCard('Content items',Object.values(counts).reduce((a,b)=>a+b,0),'database','bg-slate-100 text-slate-600')}
+    </div>
+    <div class="grid gap-6 lg:grid-cols-3">
+      <div class="lg:col-span-2 space-y-6">
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-start gap-3">
+              <span class="grid size-10 place-items-center rounded-xl bg-[#6e0e14]/10 text-[#6e0e14]">${icon('message','size-5')}</span>
+              <div><h2 class="font-black">Notification popup</h2><p class="text-xs text-slate-400">Show the welcome popup to visitors of the site.</p></div>
+            </div>
+            <label class="relative inline-flex cursor-pointer items-center" title="Enable or disable the popup">
+              <input type="checkbox" data-path="notificationPopup.enabled" ${content?.notificationPopup?.enabled?'checked':''} class="peer sr-only">
+              <span class="h-6 w-11 rounded-full bg-slate-300 transition-colors peer-checked:bg-[#0a7e39]"></span>
+              <span class="absolute left-0.5 top-0.5 size-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5"></span>
+            </label>
+          </div>
+          <p id="popup-status" class="mt-3 text-xs text-slate-400">Currently <strong>${content?.notificationPopup?.enabled?'enabled':'disabled'}</strong>. Toggle, then Save &amp; deploy to apply.</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="mb-4 flex items-center justify-between"><h2 class="font-black">Quick actions</h2></div>
+          <div class="grid gap-3 sm:grid-cols-2">
+            <button data-view="content" class="flex items-center gap-3 rounded-xl border border-slate-200 p-4 text-left transition-colors hover:border-[#0a7e39] hover:bg-emerald-50"><span class="grid size-10 place-items-center rounded-xl bg-[#0a7e39] text-white">${icon('file','size-5')}</span><span><span class="block font-bold">Edit content</span><span class="text-xs text-slate-400">Update all site sections</span></span></button>
+            <button data-view="git" class="flex items-center gap-3 rounded-xl border border-slate-200 p-4 text-left transition-colors hover:border-[#0a7e39] hover:bg-emerald-50"><span class="grid size-10 place-items-center rounded-xl bg-[#0b1b3d] text-white">${icon('github','size-5')}</span><span><span class="block font-bold">GitHub & deploy</span><span class="text-xs text-slate-400">Connect repo and push</span></span></button>
+            <button data-view="backups" class="flex items-center gap-3 rounded-xl border border-slate-200 p-4 text-left transition-colors hover:border-[#0a7e39] hover:bg-emerald-50"><span class="grid size-10 place-items-center rounded-xl bg-[#6e0e14] text-white">${icon('clock','size-5')}</span><span><span class="block font-bold">Backups</span><span class="text-xs text-slate-400">Restore an earlier version</span></span></button>
+            <a href="/" target="_blank" class="flex items-center gap-3 rounded-xl border border-slate-200 p-4 text-left transition-colors hover:border-[#0a7e39] hover:bg-emerald-50"><span class="grid size-10 place-items-center rounded-xl bg-slate-700 text-white">${icon('external','size-5')}</span><span><span class="block font-bold">View live site</span><span class="text-xs text-slate-400">Open in a new tab</span></span></a>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="mb-4 flex items-center justify-between"><h2 class="font-black">Publishing</h2><button data-view="git" class="text-sm font-bold text-[#0a7e39]">Manage →</button></div>
+          <div id="dash-git" class="text-sm text-slate-400">Loading…</div>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div class="mb-4 flex items-center justify-between"><h2 class="font-black">Recent backups</h2><button data-view="backups" class="text-sm font-bold text-[#0a7e39]">All →</button></div>
+        <div id="dash-backups" class="space-y-2 text-sm text-slate-400">Loading…</div>
+      </div>
+    </div>`;
+  await loadGit();el.querySelector('#dash-git').innerHTML=gitPanel(true);
+  const backups=await loadBackups();el.querySelector('#dash-backups').innerHTML=backups.length?backups.slice(0,6).map(backupRow).join(''):'<p class="text-slate-400">No backups yet.</p>'}
+
+function backupRow(file){const d=file.replace('dynamic-content-','').replace('.json','').replace('T',' ').replace(/-/g,':').replace(/(\d{4}):(\d{2}):(\d{2})/,'$1-$2-$3').slice(0,19);return `<div class="flex items-center justify-between gap-2 rounded-xl border border-slate-100 bg-slate-50 px-3 py-2"><div class="min-w-0"><div class="truncate text-xs font-semibold text-slate-600">${esc(d)}</div><div class="truncate text-[10px] text-slate-400">${esc(file)}</div></div><button data-restore="${esc(file)}" class="shrink-0 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-bold text-[#6e0e14] hover:bg-red-50">Restore</button></div>`}
+
+function renderEditor(){const el=document.querySelector('#view-content');
+  if(!el.dataset.built){el.dataset.built='1';el.innerHTML=`<div class="mb-4 flex flex-wrap items-center justify-between gap-3"><div class="relative w-full max-w-sm"><span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">${icon('search','size-4')}</span><input id="search" placeholder="Search sections or fields…" class="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-sm outline-none focus:border-[#0a7e39]"></div><p class="text-xs text-slate-400">Toggle, reorder, add or remove items. Save to publish.</p></div><div id="cms" class="grid gap-5"></div>`}
+  document.querySelector('#cms').innerHTML=Object.keys(content).map(section).join('')}
+function renderGit(){const el=document.querySelector('#view-git');el.innerHTML=`<div class="mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><div class="mb-4"><h2 class="text-lg font-black">Repository connection</h2><p class="text-sm text-slate-400">Connect this site to GitHub so content changes can be committed and pushed.</p></div>${gitPanel()}</div>`}
+async function renderBackups(){const el=document.querySelector('#view-backups');el.innerHTML='<div class="mx-auto max-w-3xl text-sm text-slate-400">Loading…</div>';const backups=await loadBackups();el.innerHTML=`<div class="mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><div class="mb-4 flex items-center justify-between"><div><h2 class="text-lg font-black">Available backups</h2><p class="text-sm text-slate-400">A backup is created automatically every time you save.</p></div><span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500">${backups.length} total</span></div>${backups.length?`<div class="space-y-2">${backups.map(backupRow).join('')}</div>`:'<p class="text-slate-400">No backups yet.</p>'}</div>`}
+
+/* ---------- navigation ---------- */
+function setView(v){view=v;if(v==='content'&&content)renderEditor();document.querySelectorAll('.view').forEach(s=>s.classList.add('hidden'));document.querySelector('#view-'+v).classList.remove('hidden');document.querySelector('#page-title').textContent=titles[v][0];document.querySelector('#page-sub').textContent=titles[v][1];renderSidebar();closeSidebar();if(v==='dashboard')renderDashboard();if(v==='git')renderGit();if(v==='backups')renderBackups()}
+function reloadView(){if(view==='content')renderEditor();else if(view==='dashboard')renderDashboard();else if(view==='git')renderGit();else if(view==='backups')renderBackups()}
+function renderSidebar(){const items=[['dashboard','Dashboard','dashboard'],['content','Content','file'],['git','GitHub & deploy','github'],['backups','Backups','database']];
+  document.querySelector('#nav').innerHTML=items.map(([id,label,ic])=>`<button data-view="${id}" class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors ${view===id?'bg-white/10 text-white':'text-white/60 hover:bg-white/5 hover:text-white'}">${icon(ic,'size-5')}<span>${label}</span></button>`).join('');
+  if(!content)return;document.querySelector('#nav-sections').innerHTML=Object.keys(content).map(k=>{let c=0;const d=content[k];if(d&&typeof d==='object')for(const v of Object.values(d))if(Array.isArray(v)){c=v.length;break}return `<button data-goto="${k}" class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm text-white/55 transition-colors hover:bg-white/5 hover:text-white"><span class="truncate">${esc(label(k))}</span>${c?`<span class="ml-2 shrink-0 rounded-full bg-white/10 px-2 text-[10px] font-bold">${c}</span>`:''}</button>`}).join('')}
+function toggleSidebar(){const s=document.querySelector('#sidebar');const o=document.querySelector('#overlay');s.classList.toggle('-translate-x-full');o.classList.toggle('hidden')}
+function closeSidebar(){const s=document.querySelector('#sidebar');const o=document.querySelector('#overlay');s.classList.add('-translate-x-full');o.classList.add('hidden')}
+
+/* ---------- persistence ---------- */
+async function loadContent(){const r=await fetch('/api/content');rev=r.headers.get('X-Content-Rev')||'';content=await r.json();markClean()}
+async function init(){await loadContent();document.querySelector('#view-content').dataset.built='';setView('dashboard')}
+async function reloadContent(){if(dirty&&!confirm('Discard unsaved changes?'))return;await loadContent();document.querySelector('#view-content').dataset.built='';setView(view)}
+async function saveContent(){const res=await fetch('/api/content',{method:'POST',headers:{'Content-Type':'application/json','X-Content-Rev':rev},body:JSON.stringify(content)});const result=await res.json();if(result.conflict){content=result.content;rev=res.headers.get('X-Content-Rev')||rev;markClean();document.querySelector('#view-content').dataset.built='';reloadView();toast('Content changed elsewhere — reloaded latest. Review and save again.','error');return}if(result.ok){markClean();rev=res.headers.get('X-Content-Rev')||rev;const g=result.git||{};toast('Saved. '+(g.message||'Deployed.'),'success');loadGit()}else toast('Error: '+result.error,'error')}
+
+/* ---------- icons for static spans ---------- */
+document.querySelectorAll('[data-icon]').forEach(el=>el.outerHTML=icon(el.dataset.icon,el.className||'size-5'))
+
+/* ---------- events ---------- */
+document.addEventListener('click',e=>{
+  const nav=e.target.closest('[data-view]');if(nav){setView(nav.dataset.view);return}
+  const goto=e.target.closest('[data-goto]');if(goto){setView('content');requestAnimationFrame(()=>{const s=document.querySelector('#sec-'+goto.dataset.goto);if(s)s.scrollIntoView({behavior:'smooth',block:'start'})});return}
+  const col=e.target.closest('[data-collapse]');if(col){toggleCollapse(col.dataset.collapse);return}
+  const add=e.target.closest('[data-add]');if(add){addItem(add.dataset.add);return}
+  const rm=e.target.closest('[data-remove]');if(rm){removeItem(rm.dataset.remove,Number(rm.dataset.index));return}
+  const mv=e.target.closest('[data-move]');if(mv){moveItem(mv.dataset.move,Number(mv.dataset.index),Number(mv.dataset.dir));return}
+  const rs=e.target.closest('[data-restore]');if(rs){doRestore(rs.dataset.restore);return}
+  const gs=e.target.closest('[data-git-setup]');if(gs){gitSetup();return}
+  const gp=e.target.closest('[data-git-push]');if(gp){gitPush();return}
+  const gr=e.target.closest('[data-git-refresh]');if(gr){refreshGitView();return}
+  if(e.target.closest('#menu-btn')){toggleSidebar();return}
+  if(e.target.closest('#overlay')){closeSidebar();return}
+  if(e.target.closest('[data-reload]')){reloadContent();return}
+  if(e.target.closest('[data-save]')){saveContent();return}
+});
+document.addEventListener('input',e=>{const el=e.target;if(el.id==='search'){filterSections(el.value);return}if(!el.dataset.path)return;const val=el.type==='checkbox'?el.checked:el.value;setPath(el.dataset.path,val);markDirty();if(el.dataset.path==='notificationPopup.enabled'){const s=document.querySelector('#popup-status');if(s)s.innerHTML=`Currently <strong>${val?'enabled':'disabled'}</strong>. Toggle, then Save &amp; deploy to apply.`;const sec=document.querySelector('#sec-notificationPopup');if(sec)renderEditor()}});
+document.addEventListener('change',async e=>{const el=e.target;if(!el.dataset.upload||!el.files||!el.files[0])return;const body=new FormData();body.append('file',el.files[0]);const result=await fetch('/api/upload',{method:'POST',body}).then(r=>r.json());if(result.ok){setPath(el.dataset.upload,result.url);markDirty();renderEditor();toast('Upload complete. Save to publish it.','success')}else toast(result.error||'Upload failed.','error')});
+document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='s'){e.preventDefault();saveContent()}});
+window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
 init();
-</script></body></html>
+</script>
+</body>
+</html>

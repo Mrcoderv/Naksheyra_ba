@@ -23,7 +23,7 @@ import {
 
 const serviceIcons = [BarChart3, Calculator, ShieldCheck, BriefcaseBusiness, Landmark, Sparkles]
 const BRAND_NAME = 'NAKSHATRA'
-const BRAND_LOGO = 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Maroon%20Star%20Growth%20Arrow%20Icon-wiPJK5PrDtlKyWuEiJeY0iHxo2S8C5.png'
+const BRAND_LOGO = '/nakshatra-logo.png'
 const on = (list: any[]) => (Array.isArray(list) ? list.filter((x) => x && x.enabled !== false) : [])
 const show = (section: any) => !!section && section.enabled !== false
 
@@ -398,7 +398,7 @@ export default function Home({ initial }: { initial: any }) {
                 </div>
               </div>
               <div className="overflow-hidden rounded-[28px] border border-white/15 bg-white/5 p-2 shadow-2xl shadow-black/20">
-                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-oSevCPzA9mmAzl01q1DySMqNmpl3Cg.png" alt="Nakshatra Business Advisory — Plan Today. Prosper Tomorrow." width="1600" height="900" className="h-auto w-full rounded-[22px] object-cover" />
+                <img src="/nakshatra-footer.png" alt="Nakshatra Business Advisory — Plan Today. Prosper Tomorrow." width="1200" height="675" className="h-auto w-full rounded-[22px] object-cover" />
               </div>
             </div>
             <div className="my-12 h-px bg-white/10" />
