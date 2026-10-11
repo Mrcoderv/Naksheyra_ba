@@ -59,6 +59,7 @@
     <main class="flex-1 p-4 md:p-8">
       <section id="view-dashboard" class="view"></section>
       <section id="view-content" class="view hidden"></section>
+      <section id="view-email" class="view hidden"></section>
       <section id="view-git" class="view hidden"></section>
       <section id="view-backups" class="view hidden"></section>
     </main>
@@ -70,7 +71,7 @@
 const labels={topBar:'Top bar',brand:'Brand',hero:'Hero',services:'Services',approach:'Our approach',directorAndTeam:'Director & team',achievements:'Achievements & metrics',highlightedVideo:'Highlighted video',gallery:'Gallery',testimonials:'Testimonials',posts:'Insights & guides',faqs:'FAQs',contact:'Contact',footer:'Footer',seo:'SEO & social',notificationPopup:'Notification popup'};
 const fieldLabels={logoUrl:'Logo image',imageUrl:'Image',documentUrl:'PDF document',embedUrl:'YouTube embed URL',primaryHref:'Primary button link',secondaryHref:'Secondary button link',ctaHref:'Button link',downloadUrl:'PDF document',clientName:'Client name',mapUrl:'Google Map embed URL',mapTitle:'Map title',members:'Team members'};
 const lockedPaths=new Set(['brand.name','brand.logoUrl','footer.brandName']);
-const titles={dashboard:['Dashboard','Overview of your site content'],content:['Content editor','Edit every section of the website'],git:['GitHub & deploy','Connect a repository and publish changes'],backups:['Backups','Restore a previous version of your content']};
+const titles={dashboard:['Dashboard','Overview of your site content'],content:['Content editor','Edit every section of the website'],email:['Email & SMTP','Set up email delivery for the contact form'],git:['GitHub & deploy','Connect a repository and publish changes'],backups:['Backups','Restore a previous version of your content']};
 
 const icons={
   dashboard:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/>',
@@ -95,13 +96,15 @@ const icons={
   users:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
   image:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>',
   message:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  mail:'<rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/>',
+  send:'<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
   helpCircle:'<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
   clock:'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
   hardDrive:'<line x1="22" y1="12" x2="2" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" y1="16" x2="6.01" y2="16"/><line x1="10" y1="16" x2="10.01" y2="16"/>'
 };
 const icon=(n,cls)=>`<svg class="${cls||'size-5'}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icons[n]||''}</svg>`;
 
-let content=null, rev='', dirty=false, view='dashboard', gitState={};
+let content=null, rev='', dirty=false, view='dashboard', gitState={}, smtpState={}, smtpRecipients=[];
 const collapsed=new Set();
 
 const esc=v=>String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
@@ -216,6 +219,7 @@ async function renderDashboard(){const el=document.querySelector('#view-dashboar
           <div class="mb-4 flex items-center justify-between"><h2 class="font-black">Quick actions</h2></div>
           <div class="grid gap-3 sm:grid-cols-2">
             <button data-view="content" class="flex items-center gap-3 rounded-xl border border-slate-200 p-4 text-left transition-colors hover:border-[#0a7e39] hover:bg-emerald-50"><span class="grid size-10 place-items-center rounded-xl bg-[#0a7e39] text-white">${icon('file','size-5')}</span><span><span class="block font-bold">Edit content</span><span class="text-xs text-slate-400">Update all site sections</span></span></button>
+            <button data-view="email" class="flex items-center gap-3 rounded-xl border border-slate-200 p-4 text-left transition-colors hover:border-[#0a7e39] hover:bg-emerald-50"><span class="grid size-10 place-items-center rounded-xl bg-[#0a7e39] text-white">${icon('mail','size-5')}</span><span><span class="block font-bold">Email & contact form</span><span class="text-xs text-slate-400">SMTP setup and recipients</span></span></button>
             <button data-view="git" class="flex items-center gap-3 rounded-xl border border-slate-200 p-4 text-left transition-colors hover:border-[#0a7e39] hover:bg-emerald-50"><span class="grid size-10 place-items-center rounded-xl bg-[#0b1b3d] text-white">${icon('github','size-5')}</span><span><span class="block font-bold">GitHub & deploy</span><span class="text-xs text-slate-400">Connect repo and push</span></span></button>
             <button data-view="backups" class="flex items-center gap-3 rounded-xl border border-slate-200 p-4 text-left transition-colors hover:border-[#0a7e39] hover:bg-emerald-50"><span class="grid size-10 place-items-center rounded-xl bg-[#6e0e14] text-white">${icon('clock','size-5')}</span><span><span class="block font-bold">Backups</span><span class="text-xs text-slate-400">Restore an earlier version</span></span></button>
             <a href="/" target="_blank" class="flex items-center gap-3 rounded-xl border border-slate-200 p-4 text-left transition-colors hover:border-[#0a7e39] hover:bg-emerald-50"><span class="grid size-10 place-items-center rounded-xl bg-slate-700 text-white">${icon('external','size-5')}</span><span><span class="block font-bold">View live site</span><span class="text-xs text-slate-400">Open in a new tab</span></span></a>
@@ -242,10 +246,52 @@ function renderEditor(){const el=document.querySelector('#view-content');
 function renderGit(){const el=document.querySelector('#view-git');el.innerHTML=`<div class="mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><div class="mb-4"><h2 class="text-lg font-black">Repository connection</h2><p class="text-sm text-slate-400">Connect this site to GitHub so content changes can be committed and pushed.</p></div>${gitPanel()}</div>`}
 async function renderBackups(){const el=document.querySelector('#view-backups');el.innerHTML='<div class="mx-auto max-w-3xl text-sm text-slate-400">Loading…</div>';const backups=await loadBackups();el.innerHTML=`<div class="mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><div class="mb-4 flex items-center justify-between"><div><h2 class="text-lg font-black">Available backups</h2><p class="text-sm text-slate-400">A backup is created automatically every time you save.</p></div><span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500">${backups.length} total</span></div>${backups.length?`<div class="space-y-2">${backups.map(backupRow).join('')}</div>`:'<p class="text-slate-400">No backups yet.</p>'}</div>`}
 
+/* ---------- email / SMTP ---------- */
+function smtpField(id,label,value,placeholder,type){return `<label class="block text-sm font-semibold text-slate-600">${esc(label)}<input id="${id}" type="${type||'text'}" value="${esc(value)}" placeholder="${esc(placeholder)}" autocomplete="off" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 font-normal outline-none focus:border-[#0a7e39]"></label>`}
+function recipientRow(email,i){return `<div class="flex items-center justify-between gap-2 rounded-xl border border-slate-100 bg-slate-50 px-3 py-2"><span class="truncate text-sm font-semibold text-slate-600">${esc(email)}</span><button type="button" data-smtp-remove="${i}" class="grid size-7 shrink-0 place-items-center rounded-lg border border-red-200 text-red-500 hover:bg-red-50" title="Remove">${icon('trash','size-4')}</button></div>`}
+function drawEmail(){const el=document.querySelector('#view-email');const c=smtpState;el.innerHTML=`
+  <div class="mx-auto max-w-4xl space-y-6">
+    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div><h2 class="text-lg font-black">SMTP server</h2><p class="text-sm text-slate-400">Outgoing mail account used to deliver contact-form enquiries.</p></div>
+        <span class="rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider ${c.host?'bg-emerald-100 text-emerald-700':'bg-amber-100 text-amber-700'}">${c.host?'Configured':'Not configured'}</span>
+      </div>
+      <div class="mt-5 grid gap-4 md:grid-cols-2">
+        ${smtpField('smtp-host','SMTP host',c.host||'','smtp.gmail.com')}
+        ${smtpField('smtp-port','Port',c.port||587,'587')}
+        ${smtpField('smtp-user','Username',c.user||'','you@company.com')}
+        ${smtpField('smtp-pass','Password','',c.hasPassword?'•••••••• saved — leave blank to keep':'App password or SMTP password','password')}
+        ${smtpField('smtp-fromname','Sender name',c.fromName||'','Nakshatra Business Advisory')}
+        ${smtpField('smtp-fromemail','Sender email',c.fromEmail||'','no-reply@company.com')}
+      </div>
+      <label class="mt-4 inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-slate-600"><input id="smtp-secure" type="checkbox" ${c.secure?'checked':''} class="size-4 rounded border-slate-300 text-[#0a7e39] focus:ring-[#0a7e39]"> Use SSL/TLS (usually port 465)</label>
+    </div>
+    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-lg font-black">Forward enquiries to</h2>
+      <p class="text-sm text-slate-400">Every contact-form submission is emailed to all addresses below.</p>
+      <div class="mt-4 space-y-2" id="smtp-recipients">${smtpRecipients.length?smtpRecipients.map(recipientRow).join(''):'<p class="text-sm text-slate-400">No recipients yet — add at least one.</p>'}</div>
+      <div class="mt-3 flex flex-wrap gap-2">
+        <input id="smtp-new-recipient" type="email" placeholder="add@company.com" class="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-4 py-2.5 outline-none focus:border-[#0a7e39]">
+        <button type="button" data-smtp-add class="flex items-center gap-2 rounded-xl bg-[#0b1b3d] px-4 py-2.5 text-sm font-bold text-white hover:bg-[#0b1b3d]/90">${icon('plus','size-4')} Add</button>
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <button type="button" data-smtp-save class="flex items-center gap-2 rounded-xl bg-[#0a7e39] px-5 py-3 text-sm font-bold text-white hover:bg-[#0b6a31]">${icon('save','size-4')} Save email settings</button>
+      <button type="button" data-smtp-test class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-600 hover:bg-slate-50">${icon('send','size-4')} Send test email</button>
+    </div>
+    <p class="text-xs text-slate-400">Tip: for Gmail use an <strong>App Password</strong> (not your normal password) — host <code>smtp.gmail.com</code>, port 465 with SSL/TLS (or 587 with STARTTLS). For Outlook: <code>smtp.office365.com</code>, port 587.</p>
+  </div>`}
+async function loadSmtp(){try{const r=await fetch('/api/smtp');smtpState=(await r.json()).config||{}}catch{smtpState={}}smtpRecipients=[...(smtpState.recipients||[])]}
+async function renderEmail(){const el=document.querySelector('#view-email');el.innerHTML='<div class="text-sm text-slate-400">Loading…</div>';await loadSmtp();drawEmail()}
+function addRecipient(){const input=document.querySelector('#smtp-new-recipient');const value=input.value.trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)){toast('Enter a valid email address.','error');return}if(!smtpRecipients.includes(value))smtpRecipients.push(value);drawEmail();document.querySelector('#smtp-new-recipient').focus()}
+function removeRecipient(i){smtpRecipients.splice(i,1);drawEmail()}
+async function saveSmtp(){const g=id=>document.querySelector('#'+id).value.trim();const cfg={host:g('smtp-host'),port:Number(g('smtp-port'))||587,secure:document.querySelector('#smtp-secure').checked,user:g('smtp-user'),pass:document.querySelector('#smtp-pass').value,fromName:g('smtp-fromname'),fromEmail:g('smtp-fromemail'),recipients:smtpRecipients};const r=await fetch('/api/smtp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(cfg)}).then(r=>r.json());toast(r.ok?'Email settings saved.':('Error: '+(r.error||'Could not save.')),r.ok?'success':'error');if(r.ok){smtpState=r.config;smtpRecipients=[...(r.config.recipients||[])];drawEmail()}}
+async function testSmtp(){const to=prompt('Send a test email to:',smtpRecipients[0]||'');if(!to)return;toast('Sending test email…','info');const r=await fetch('/api/smtp/test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to})}).then(r=>r.json());toast(r.ok?(r.message||'Test email sent.'):(r.error||'Test failed.'),r.ok?'success':'error')}
+
 /* ---------- navigation ---------- */
-function setView(v){view=v;if(v==='content'&&content)renderEditor();document.querySelectorAll('.view').forEach(s=>s.classList.add('hidden'));document.querySelector('#view-'+v).classList.remove('hidden');document.querySelector('#page-title').textContent=titles[v][0];document.querySelector('#page-sub').textContent=titles[v][1];renderSidebar();closeSidebar();if(v==='dashboard')renderDashboard();if(v==='git')renderGit();if(v==='backups')renderBackups()}
-function reloadView(){if(view==='content')renderEditor();else if(view==='dashboard')renderDashboard();else if(view==='git')renderGit();else if(view==='backups')renderBackups()}
-function renderSidebar(){const items=[['dashboard','Dashboard','dashboard'],['content','Content','file'],['git','GitHub & deploy','github'],['backups','Backups','database']];
+function setView(v){view=v;if(v==='content'&&content)renderEditor();document.querySelectorAll('.view').forEach(s=>s.classList.add('hidden'));document.querySelector('#view-'+v).classList.remove('hidden');document.querySelector('#page-title').textContent=titles[v][0];document.querySelector('#page-sub').textContent=titles[v][1];renderSidebar();closeSidebar();if(v==='dashboard')renderDashboard();if(v==='email')renderEmail();if(v==='git')renderGit();if(v==='backups')renderBackups()}
+function reloadView(){if(view==='content')renderEditor();else if(view==='dashboard')renderDashboard();else if(view==='email')renderEmail();else if(view==='git')renderGit();else if(view==='backups')renderBackups()}
+function renderSidebar(){const items=[['dashboard','Dashboard','dashboard'],['content','Content','file'],['email','Email & SMTP','mail'],['git','GitHub & deploy','github'],['backups','Backups','database']];
   document.querySelector('#nav').innerHTML=items.map(([id,label,ic])=>`<button data-view="${id}" class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors ${view===id?'bg-white/10 text-white':'text-white/60 hover:bg-white/5 hover:text-white'}">${icon(ic,'size-5')}<span>${label}</span></button>`).join('');
   if(!content)return;document.querySelector('#nav-sections').innerHTML=Object.keys(content).map(k=>{let c=0;const d=content[k];if(d&&typeof d==='object')for(const v of Object.values(d))if(Array.isArray(v)){c=v.length;break}return `<button data-goto="${k}" class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm text-white/55 transition-colors hover:bg-white/5 hover:text-white"><span class="truncate">${esc(label(k))}</span>${c?`<span class="ml-2 shrink-0 rounded-full bg-white/10 px-2 text-[10px] font-bold">${c}</span>`:''}</button>`}).join('')}
 function toggleSidebar(){const s=document.querySelector('#sidebar');const o=document.querySelector('#overlay');s.classList.toggle('-translate-x-full');o.classList.toggle('hidden')}
@@ -272,6 +318,10 @@ document.addEventListener('click',e=>{
   const gs=e.target.closest('[data-git-setup]');if(gs){gitSetup();return}
   const gp=e.target.closest('[data-git-push]');if(gp){gitPush();return}
   const gr=e.target.closest('[data-git-refresh]');if(gr){refreshGitView();return}
+  const ss=e.target.closest('[data-smtp-save]');if(ss){saveSmtp();return}
+  const st=e.target.closest('[data-smtp-test]');if(st){testSmtp();return}
+  const sa=e.target.closest('[data-smtp-add]');if(sa){addRecipient();return}
+  const sr=e.target.closest('[data-smtp-remove]');if(sr){removeRecipient(Number(sr.dataset.smtpRemove));return}
   if(e.target.closest('#menu-btn')){toggleSidebar();return}
   if(e.target.closest('#overlay')){closeSidebar();return}
   if(e.target.closest('[data-reload]')){reloadContent();return}
@@ -279,7 +329,7 @@ document.addEventListener('click',e=>{
 });
 document.addEventListener('input',e=>{const el=e.target;if(el.id==='search'){filterSections(el.value);return}if(!el.dataset.path)return;const val=el.type==='checkbox'?el.checked:el.value;setPath(el.dataset.path,val);markDirty();if(el.dataset.path==='notificationPopup.enabled'){const s=document.querySelector('#popup-status');if(s)s.innerHTML=`Currently <strong>${val?'enabled':'disabled'}</strong>. Toggle, then Save &amp; deploy to apply.`;const sec=document.querySelector('#sec-notificationPopup');if(sec)renderEditor()}});
 document.addEventListener('change',async e=>{const el=e.target;if(!el.dataset.upload||!el.files||!el.files[0])return;const body=new FormData();body.append('file',el.files[0]);const result=await fetch('/api/upload',{method:'POST',body}).then(r=>r.json());if(result.ok){setPath(el.dataset.upload,result.url);markDirty();renderEditor();toast('Upload complete. Save to publish it.','success')}else toast(result.error||'Upload failed.','error')});
-document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='s'){e.preventDefault();saveContent()}});
+document.addEventListener('keydown',e=>{if(e.target.id==='smtp-new-recipient'&&e.key==='Enter'){e.preventDefault();addRecipient();return}if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='s'){e.preventDefault();saveContent()}});
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
 init();
 </script>

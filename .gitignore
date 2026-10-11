@@ -18,5 +18,8 @@ node_modules
 # CMS generated backups
 data/backups/
 
+# SMTP credentials (contains password — never commit)
+data/smtp-config.json
+
 # TypeScript build info
 *.tsbuildinfo

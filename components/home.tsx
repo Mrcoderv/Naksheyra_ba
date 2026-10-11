@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
 import {
   ArrowRight,
   BarChart3,
@@ -73,21 +73,21 @@ export default function Home({ initial }: { initial: any }) {
       )}
 
       <header className="sticky top-0 z-40 border-b border-[#0b1b3d]/10 bg-[#f8f9fa]/95 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8 lg:py-6">
           <a href="#top" className="flex items-center gap-3" aria-label="Nakshatra Business Advisory home">
-            <img src={BRAND_LOGO} alt={`${BRAND_NAME} logo`} width="72" height="52" className="h-12 w-auto object-contain" />
+            <img src={BRAND_LOGO} alt={`${BRAND_NAME} logo`} width="72" height="52" className="h-12 w-auto object-contain lg:h-16" />
             <div className="hidden border-l border-[#0b1b3d]/15 pl-3 sm:block">
-              <div className="text-[13px] font-extrabold tracking-[0.18em]">{BRAND_NAME}</div>
+              <div className="text-[13px] font-extrabold tracking-[0.18em] lg:text-[15px]">{BRAND_NAME}</div>
               <div className="text-[9px] font-bold tracking-[0.16em] text-[#6e0e14]">{brand.tagline}</div>
             </div>
           </a>
-          <nav className="hidden items-center gap-8 text-sm font-semibold lg:flex" aria-label="Main navigation">
+          <nav className="hidden items-center gap-8 text-sm font-semibold lg:flex lg:gap-10 lg:text-[16px]" aria-label="Main navigation">
             <a href="#services" className="transition-colors hover:text-[#0a7e39]">Services</a>
             <a href="#approach" className="transition-colors hover:text-[#0a7e39]">Our approach</a>
             <a href="#director" className="transition-colors hover:text-[#0a7e39]">About us</a>
             <a href="#insights" className="transition-colors hover:text-[#0a7e39]">Insights</a>
           </nav>
-          <a href="#contact" className="hidden rounded-full bg-[#0a7e39] px-5 py-3 text-sm font-bold text-white shadow-[0_8px_20px_rgba(10,126,57,0.18)] transition-transform hover:-translate-y-0.5 sm:inline-flex">
+          <a href="#contact" className="hidden rounded-full bg-[#0a7e39] px-5 py-3 text-sm font-bold text-white shadow-[0_8px_20px_rgba(10,126,57,0.18)] transition-transform hover:-translate-y-0.5 sm:inline-flex lg:px-6 lg:py-3.5 lg:text-[15px]">
             Book a consultation <ArrowRight className="ml-2 size-4" />
           </a>
           <button type="button" onClick={() => setMenuOpen(!menuOpen)} className="rounded-full border border-[#0b1b3d]/15 p-2 lg:hidden" aria-label={menuOpen ? 'Close menu' : 'Open menu'}>
@@ -194,7 +194,7 @@ export default function Home({ initial }: { initial: any }) {
         <section id="services" className="mx-auto max-w-7xl px-5 py-24 lg:px-8">
           <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <div>
-              <div className="mb-4 text-xs font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.services.eyebrow}</div>
+              <div className="mb-4 nba-eyebrow text-[13px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.services.eyebrow}</div>
               <h2 className="max-w-xl text-4xl font-black tracking-[-0.04em] sm:text-5xl">{c.services.title}</h2>
             </div>
           </div>
@@ -221,7 +221,7 @@ export default function Home({ initial }: { initial: any }) {
         <section id="approach" className="bg-[#0b1b3d] px-5 py-24 text-white lg:px-8">
           <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[.8fr_1.2fr] lg:items-center">
             <div>
-              <div className="mb-4 text-xs font-black uppercase tracking-[0.2em] text-[#7bc497]">{c.approach.eyebrow}</div>
+              <div className="nba-eyebrow nba-eyebrow-dark mb-4 text-[13px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.approach.eyebrow}</div>
               <h2 className="text-4xl font-black tracking-[-0.04em] sm:text-5xl">{c.approach.title}</h2>
               <p className="mt-6 max-w-md leading-8 text-white/60">{c.approach.subtitle}</p>
               <a href={c.approach.ctaHref || '#contact'} className="mt-8 inline-flex items-center rounded-full bg-[#0a7e39] px-5 py-3 text-sm font-bold text-white hover:bg-[#149a4c]">
@@ -243,7 +243,7 @@ export default function Home({ initial }: { initial: any }) {
 
       {show(c.directorAndTeam) && team.length > 0 && (
         <section id="director" className="mx-auto max-w-7xl px-5 py-24 lg:px-8">
-          <div className="mb-4 text-xs font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.directorAndTeam.eyebrow}</div>
+          <div className="mb-4 nba-eyebrow text-[13px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.directorAndTeam.eyebrow}</div>
           <h2 className="text-4xl font-black tracking-[-0.04em] sm:text-5xl">{c.directorAndTeam.title}</h2>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-[#0b1b3d]/75">{c.directorAndTeam.subtitle}</p>
           <TeamSlider team={team} />
@@ -252,7 +252,7 @@ export default function Home({ initial }: { initial: any }) {
 
       {show(c.gallery) && gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-5 pb-24 lg:px-8">
-          <div className="mb-4 text-xs font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.gallery.eyebrow}</div>
+          <div className="mb-4 nba-eyebrow text-[13px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.gallery.eyebrow}</div>
           <h2 className="mb-10 text-4xl font-black tracking-[-0.04em] sm:text-5xl">{c.gallery.title}</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {gallery.map((g: any) => (
@@ -267,7 +267,7 @@ export default function Home({ initial }: { initial: any }) {
 
       {show(c.highlightedVideo) && videos.length > 0 && (
         <section id="insights" className="mx-auto max-w-7xl px-5 pb-24 lg:px-8">
-          <div className="mb-4 text-xs font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.highlightedVideo.eyebrow}</div>
+          <div className="mb-4 nba-eyebrow text-[13px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.highlightedVideo.eyebrow}</div>
           <h2 className="mb-10 text-4xl font-black tracking-[-0.04em] sm:text-5xl">{c.highlightedVideo.title}</h2>
           <div className="grid gap-8">
             {videos.map((v: any) => (
@@ -292,7 +292,7 @@ export default function Home({ initial }: { initial: any }) {
       {show(c.testimonials) && testimonials.length > 0 && (
         <section className="bg-white px-5 py-24 lg:px-8">
           <div className="mx-auto max-w-7xl">
-            <div className="mb-4 text-xs font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.testimonials.eyebrow}</div>
+            <div className="mb-4 nba-eyebrow text-[13px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.testimonials.eyebrow}</div>
             <h2 className="mb-10 text-4xl font-black tracking-[-0.04em] sm:text-5xl">{c.testimonials.title}</h2>
             <div className="grid gap-4 sm:grid-cols-2">
               {testimonials.map((t: any) => (
@@ -310,7 +310,7 @@ export default function Home({ initial }: { initial: any }) {
 
       {show(c.posts) && posts.length > 0 && (
         <section className="mx-auto max-w-7xl px-5 py-24 lg:px-8">
-          <div className="mb-4 text-xs font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.posts.eyebrow}</div>
+          <div className="mb-4 nba-eyebrow text-[13px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.posts.eyebrow}</div>
           <h2 className="mb-10 text-4xl font-black tracking-[-0.04em] sm:text-5xl">{c.posts.title}</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {posts.map((p: any) => (
@@ -330,7 +330,7 @@ export default function Home({ initial }: { initial: any }) {
           <div className="mx-auto max-w-7xl">
             <div className="grid gap-12 lg:grid-cols-[.8fr_1.2fr]">
               <div>
-                <div className="mb-4 text-xs font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.faqs.eyebrow}</div>
+                <div className="mb-4 nba-eyebrow text-[13px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.faqs.eyebrow}</div>
                 <h2 className="text-4xl font-black tracking-tight">{c.faqs.title}</h2>
               </div>
               <div className="divide-y divide-[#0b1b3d]/10 border-y border-[#0b1b3d]/10">
@@ -353,7 +353,7 @@ export default function Home({ initial }: { initial: any }) {
         <section id="contact" className="bg-[#e8eee9] px-5 py-24 lg:px-8">
           <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
             <div>
-              <div className="mb-4 text-xs font-black uppercase tracking-[0.2em] text-[#6e0e14]">{contact.eyebrow}</div>
+              <div className="mb-4 nba-eyebrow text-[13px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">{contact.eyebrow}</div>
               <h2 className="text-4xl font-black tracking-[-0.04em] sm:text-5xl">{contact.title}</h2>
               <p className="mt-5 max-w-md leading-7 text-[#0b1b3d]/70">{contact.subtitle}</p>
               <div className="mt-8 flex items-center gap-3 text-sm font-semibold">
@@ -366,15 +366,7 @@ export default function Home({ initial }: { initial: any }) {
                 {contact.phone && <div className="flex items-center gap-2"><Phone className="size-4 text-[#0a7e39]" /> {contact.phone}</div>}
               </div>
             </div>
-            <form className="rounded-3xl bg-white p-6 shadow-xl shadow-[#0b1b3d]/5 sm:p-8" action="https://api.web3forms.com/submit" method="POST">
-              <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY" />
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="text-sm font-semibold">Your name<input name="name" required className="mt-2 w-full rounded-xl border border-[#0b1b3d]/15 bg-[#f8f9fa] px-4 py-3 font-normal outline-none transition focus:border-[#0a7e39]" placeholder="Your name" /></label>
-                <label className="text-sm font-semibold">Email address<input name="email" type="email" required className="mt-2 w-full rounded-xl border border-[#0b1b3d]/15 bg-[#f8f9fa] px-4 py-3 font-normal outline-none transition focus:border-[#0a7e39]" placeholder="you@company.com" /></label>
-              </div>
-              <label className="mt-4 block text-sm font-semibold">How can we help?<textarea name="message" required rows={4} className="mt-2 w-full resize-none rounded-xl border border-[#0b1b3d]/15 bg-[#f8f9fa] px-4 py-3 font-normal outline-none transition focus:border-[#0a7e39]" placeholder="Tell us about your goals..." /></label>
-              <button type="submit" className="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-[#0a7e39] px-5 py-4 font-bold text-white transition-colors hover:bg-[#0b1b3d]">Send enquiry <ArrowRight className="ml-2 size-4" /></button>
-            </form>
+            <ContactForm />
           </div>
           {contact.mapUrl && (
             <div className="mx-auto mt-12 max-w-7xl overflow-hidden rounded-3xl border border-[#0b1b3d]/10 bg-white shadow-xl shadow-[#0b1b3d]/5">
@@ -521,6 +513,41 @@ function TeamSlider({ team }: { team: any[] }) {
   )
 }
 
+function ContactForm() {
+  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' })
+  const [status, setStatus] = useState<{ type: 'idle' | 'sending' | 'ok' | 'error'; text: string }>({ type: 'idle', text: '' })
+  const update = (key: keyof typeof form) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setForm((f) => ({ ...f, [key]: e.target.value }))
+  async function submit(e: FormEvent) {
+    e.preventDefault()
+    setStatus({ type: 'sending', text: '' })
+    try {
+      const res = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) })
+      const data = await res.json().catch(() => ({ ok: false }))
+      if (res.ok && data.ok) {
+        setForm({ name: '', email: '', phone: '', message: '' })
+        setStatus({ type: 'ok', text: 'Thank you — your enquiry has been sent. We will be in touch shortly.' })
+      } else {
+        setStatus({ type: 'error', text: data.error || 'Something went wrong. Please try again.' })
+      }
+    } catch {
+      setStatus({ type: 'error', text: 'Network error. Please check your connection and try again.' })
+    }
+  }
+  const input = 'mt-2 w-full rounded-xl border border-[#0b1b3d]/15 bg-[#f8f9fa] px-4 py-3 font-normal outline-none transition focus:border-[#0a7e39]'
+  return (
+    <form onSubmit={submit} className="rounded-3xl bg-white p-6 shadow-xl shadow-[#0b1b3d]/5 sm:p-8">
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className="text-sm font-semibold">Your name<input value={form.name} onChange={update('name')} name="name" required className={input} placeholder="Your name" /></label>
+        <label className="text-sm font-semibold">Email address<input value={form.email} onChange={update('email')} name="email" type="email" required className={input} placeholder="you@company.com" /></label>
+      </div>
+      <label className="mt-4 block text-sm font-semibold">Phone number<input value={form.phone} onChange={update('phone')} name="phone" type="tel" className={input} placeholder="+977 98XXXXXXXX (optional)" /></label>
+      <label className="mt-4 block text-sm font-semibold">How can we help?<textarea value={form.message} onChange={update('message')} name="message" required rows={4} className={`${input} resize-none`} placeholder="Tell us about your goals..." /></label>
+      <button type="submit" disabled={status.type === 'sending'} className="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-[#0a7e39] px-5 py-4 font-bold text-white transition-colors hover:bg-[#0b1b3d] disabled:opacity-60">{status.type === 'sending' ? 'Sending…' : 'Send enquiry'} <ArrowRight className="ml-2 size-4" /></button>
+      {status.text && <p className={`mt-3 text-sm font-semibold ${status.type === 'ok' ? 'text-[#0a7e39]' : 'text-red-600'}`}>{status.text}</p>}
+    </form>
+  )
+}
+
 function Notice({ popup }: { popup: any }) {
   const [open, setOpen] = useState(false)
   useEffect(() => {
@@ -536,7 +563,7 @@ function Notice({ popup }: { popup: any }) {
     <div className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-[#0b1b3d]/70 p-5 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label={popup.title}>
       <div className="relative my-auto w-full max-w-md rounded-3xl bg-white p-8 shadow-2xl">
         <button type="button" onClick={() => setOpen(false)} className="absolute right-4 top-4 rounded-full bg-[#0b1b3d]/5 p-2" aria-label="Close"><X className="size-5" /></button>
-        <div className="text-xs font-black uppercase tracking-[0.2em] text-[#6e0e14]">NBA update</div>
+        <div className="nba-eyebrow text-[13px] font-black uppercase tracking-[0.2em] text-[#6e0e14]">NBA update</div>
         <h2 className="mt-3 text-2xl font-black">{popup.title}</h2>
         <p className="mt-3 leading-7 text-[#0b1b3d]/75">{popup.message}</p>
         {doc && (isPdf || isImg) && (
