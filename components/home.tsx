@@ -380,18 +380,47 @@ export default function Home({ initial }: { initial: any }) {
         </section>
       )}
 
-  {show(c.footer) && (
-<footer className="bg-[#0b1b3d] px-5 py-10 text-white lg:px-8">
-  <div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 sm:flex-row sm:items-end">
-  <div>
-  <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-oSevCPzA9mmAzl01q1DySMqNmpl3Cg.png" alt="Nakshatra Business Advisory — Plan Today. Prosper Tomorrow." width="1600" height="900" className="w-full max-w-xl rounded-2xl object-cover" />
-  <div className="mt-5 text-xs font-bold tracking-[0.16em] text-[#7bc497]">{footer.tagline}</div>
-  <p className="mt-5 text-sm text-white/50">{footer.note}</p>
-  </div>
-            <div className="text-left text-sm text-white/55 sm:text-right">
-              <div>{contact.address}</div>
-              <div className="mt-2">{contact.email}</div>
-              <div className="mt-6 text-xs text-white/30">{footer.copyright}</div>
+      {show(c.footer) && (
+        <footer className="relative overflow-hidden border-t border-white/10 bg-[#07152f] px-5 pb-6 pt-16 text-white lg:px-8">
+          <div className="pointer-events-none absolute -right-32 -top-32 size-96 rounded-full bg-[#0a7e39]/15 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-48 -left-32 size-96 rounded-full bg-[#6e0e14]/20 blur-3xl" />
+          <div className="relative mx-auto max-w-7xl">
+            <div className="grid gap-10 lg:grid-cols-[1.15fr_.85fr] lg:items-center">
+              <div>
+                <div className="mb-5 inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.24em] text-[#7bc497]">
+                  <span className="size-2 rounded-full bg-[#7bc497]" /> Stay ahead with NBA
+                </div>
+                <h2 className="max-w-xl text-3xl font-black leading-tight tracking-[-0.04em] sm:text-5xl">Plan today.<br /><span className="text-[#7bc497]">Prosper tomorrow.</span></h2>
+                <p className="mt-5 max-w-lg text-sm leading-7 text-white/55">{footer.note}</p>
+                <div className="mt-7 flex flex-wrap gap-3">
+                  <a href="#contact" className="inline-flex items-center rounded-full bg-[#0a7e39] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#149a4c]">Start a conversation <ArrowRight className="ml-2 size-4" /></a>
+                  <a href="#top" className="inline-flex items-center rounded-full border border-white/15 px-5 py-3 text-sm font-bold text-white/80 transition-colors hover:border-[#7bc497] hover:text-[#7bc497]">Back to top</a>
+                </div>
+              </div>
+              <div className="overflow-hidden rounded-[28px] border border-white/15 bg-white/5 p-2 shadow-2xl shadow-black/20">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-oSevCPzA9mmAzl01q1DySMqNmpl3Cg.png" alt="Nakshatra Business Advisory — Plan Today. Prosper Tomorrow." width="1600" height="900" className="h-auto w-full rounded-[22px] object-cover" />
+              </div>
+            </div>
+            <div className="my-12 h-px bg-white/10" />
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-[1fr_auto_auto] lg:items-start">
+              <div>
+                <div className="text-lg font-black tracking-[0.12em]">NAKSHATRA</div>
+                <div className="mt-2 text-xs font-bold uppercase tracking-[0.16em] text-[#7bc497]">{footer.tagline}</div>
+              </div>
+              <div className="text-sm text-white/60">
+                <div className="mb-2 text-xs font-black uppercase tracking-[0.18em] text-white/35">Visit us</div>
+                <div>{contact.address}</div>
+                <div className="mt-1">Buddhanagar, Kathmandu, Nepal</div>
+              </div>
+              <div className="text-sm text-white/60 sm:text-right">
+                <div className="mb-2 text-xs font-black uppercase tracking-[0.18em] text-white/35">Contact</div>
+                <a href={`mailto:${contact.email}`} className="transition-colors hover:text-[#7bc497]">{contact.email}</a>
+                <div className="mt-1">{contact.phone}</div>
+              </div>
+            </div>
+            <div className="mt-10 flex flex-col gap-2 border-t border-white/10 pt-5 text-xs text-white/30 sm:flex-row sm:items-center sm:justify-between">
+              <span>{footer.copyright}</span>
+              <span>Financial clarity for the next move.</span>
             </div>
           </div>
         </footer>
