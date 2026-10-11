@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
 import {
   ArrowRight,
   BarChart3,
@@ -24,7 +23,7 @@ import {
 
 const serviceIcons = [BarChart3, Calculator, ShieldCheck, BriefcaseBusiness, Landmark, Sparkles]
 const BRAND_NAME = 'NAKSHATRA'
-const BRAND_LOGO = '/nakshatra-logo.png'
+const BRAND_LOGO = 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Maroon%20Star%20Growth%20Arrow%20Icon-wiPJK5PrDtlKyWuEiJeY0iHxo2S8C5.png'
 const on = (list: any[]) => (Array.isArray(list) ? list.filter((x) => x && x.enabled !== false) : [])
 const show = (section: any) => !!section && section.enabled !== false
 
@@ -76,7 +75,7 @@ export default function Home({ initial }: { initial: any }) {
       <header className="sticky top-0 z-40 border-b border-[#0b1b3d]/10 bg-[#f8f9fa]/95 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
           <a href="#top" className="flex items-center gap-3" aria-label="Nakshatra Business Advisory home">
-            <Image src={BRAND_LOGO} alt={`${BRAND_NAME} logo`} width={72} height={52} className="h-12 w-auto object-contain" unoptimized />
+            <img src={BRAND_LOGO} alt={`${BRAND_NAME} logo`} width="72" height="52" className="h-12 w-auto object-contain" />
             <div className="hidden border-l border-[#0b1b3d]/15 pl-3 sm:block">
               <div className="text-[13px] font-extrabold tracking-[0.18em]">{BRAND_NAME}</div>
               <div className="text-[9px] font-bold tracking-[0.16em] text-[#6e0e14]">{brand.tagline}</div>
@@ -247,7 +246,7 @@ export default function Home({ initial }: { initial: any }) {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {gallery.map((g: any) => (
               <figure key={g.id || g.imageUrl} className="overflow-hidden rounded-3xl border border-[#0b1b3d]/10 bg-white">
-                <Image src={g.imageUrl} alt={g.caption || 'Gallery image'} width={600} height={420} className="h-56 w-full object-cover" unoptimized />
+                <img src={g.imageUrl} alt={g.caption || 'Gallery image'} width="600" height="420" className="h-56 w-full object-cover" />
                 {g.caption && <figcaption className="px-5 py-4 text-sm text-[#0b1b3d]/60">{g.caption}</figcaption>}
               </figure>
             ))}
@@ -445,7 +444,7 @@ function TeamSlider({ team }: { team: any[] }) {
             key={m.id || m.name}
             className="w-full shrink-0 snap-start rounded-3xl border border-[#0b1b3d]/10 bg-white p-7 sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]"
           >
-            {m.imageUrl && <Image src={m.imageUrl} alt={m.name} width={80} height={80} className="mb-5 size-20 object-contain" unoptimized />}
+            {m.imageUrl && <img src={m.imageUrl} alt={m.name} width="80" height="80" className="mb-5 size-20 object-contain" />}
             <h3 className="text-xl font-black">{m.name}</h3>
             <div className="mt-1 text-sm font-bold text-[#0a7e39]">{m.title}</div>
             <p className="mt-3 text-sm leading-7 text-[#0b1b3d]/60">{m.bio}</p>
