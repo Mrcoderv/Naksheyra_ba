@@ -469,17 +469,38 @@ function TeamSlider({ team }: { team: any[] }) {
         ref={viewport}
         className="flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {team.map((m: any) => (
-          <article
-            key={m.id || m.name}
-            className="w-full shrink-0 snap-start rounded-3xl border border-[#0b1b3d]/10 bg-white p-7 sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]"
-          >
-            {m.imageUrl && <img src={m.imageUrl} alt={m.name} width="80" height="80" className="mb-5 size-20 object-contain" />}
-            <h3 className="text-xl font-black">{m.name}</h3>
-            <div className="mt-1 text-sm font-bold text-[#0a7e39]">{m.title}</div>
-            <p className="mt-3 text-sm leading-7 text-[#0b1b3d]/70">{m.bio}</p>
-          </article>
-        ))}
+        {team.map((m: any) => {
+          const initials = String(m.name || '')
+            .split(/\s+/)
+            .filter(Boolean)
+            .map((w: string) => w[0])
+            .slice(0, 2)
+            .join('')
+            .toUpperCase()
+          return (
+            <article
+              key={m.id || m.name}
+              className="group w-full shrink-0 snap-start overflow-hidden rounded-3xl border border-[#0b1b3d]/10 bg-white shadow-sm transition-shadow hover:shadow-xl sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)] !p-0"
+            >
+              <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#eef1f3]">
+                {m.imageUrl ? (
+                  <img
+                    src={m.imageUrl}
+                    alt={m.name}
+                    loading="lazy"
+                    className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                  />
+                ) : (
+                  <span className="absolute inset-0 grid place-items-center text-4xl font-black text-[#0b1b3d]/25">{initials}</span>
+                )}
+              </div>
+              <div className="border-t border-[#0b1b3d]/10 p-5">
+                <h3 className="!mt-0 text-lg font-black tracking-tight">{m.name}</h3>
+                <div className="mt-1 text-sm font-bold text-[#0a7e39]">{m.title}</div>
+              </div>
+            </article>
+          )
+        })}
       </div>
       {team.length > 1 && (
         <div className="mt-4 flex justify-end gap-3">
