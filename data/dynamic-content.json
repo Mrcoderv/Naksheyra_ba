@@ -247,7 +247,9 @@
     "note": "No obligation. Just a useful first conversation.",
     "email": "hello@nakshatraba.com",
     "phone": "+977-1-0000000",
-    "address": "Kathmandu, Nepal"
+    "address": "Kathmandu, Nepal",
+    "mapTitle": "Nakshatra Business Advisory location",
+    "mapUrl": "https://www.google.com/maps?q=Kathmandu%2C+Nepal&output=embed"
   },
   "footer": {
     "enabled": true,

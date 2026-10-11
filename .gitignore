@@ -17,3 +17,6 @@ node_modules
 
 # CMS generated backups
 data/backups/
+
+# TypeScript build info
+*.tsbuildinfo

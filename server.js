@@ -57,17 +57,54 @@ function git(args) {
     )
   })
 }
+async function currentBranch() {
+  const branch = await git('rev-parse --abbrev-ref HEAD')
+  return branch.stdout && branch.stdout !== 'HEAD' ? branch.stdout : 'main'
+}
+async function gitStatus() {
+  const inside = await git('rev-parse --is-inside-work-tree')
+  const status = { isRepo: inside.ok, remote: '', branch: 'main', ahead: 0, behind: 0, lastCommit: '', hasChanges: false }
+  if (!inside.ok) return status
+  status.branch = await currentBranch()
+  status.remote = (await git('remote get-url origin')).stdout
+  status.lastCommit = (await git('log -1 --pretty=%s')).stdout
+  status.hasChanges = !!(await git('status --porcelain')).stdout
+  const counts = (await git(`rev-list --left-right --count ${status.branch}...origin/${status.branch}`)).stdout
+  if (counts) {
+    const [ahead, behind] = counts.split(/\s+/).map(Number)
+    status.ahead = ahead || 0
+    status.behind = behind || 0
+  }
+  return status
+}
 async function gitDeploy(message) {
   const inside = await git('rev-parse --is-inside-work-tree')
   if (!inside.ok) return { ok: false, skipped: true, message: 'Not a git repository — saved locally only.' }
+  const branch = await currentBranch()
   await git('add -A')
   const commit = await git(`commit -m ${JSON.stringify(message)}`)
   if (!commit.ok && !/nothing to commit/i.test(`${commit.stdout} ${commit.stderr}`)) {
     return { ok: false, skipped: true, message: commit.message || commit.stderr }
   }
-  const push = await git('push origin main')
+  const push = await git(`push -u origin ${branch}`)
   if (!push.ok) return { ok: false, skipped: true, message: 'Committed locally, but push failed (check remote/credentials).', detail: push.stderr }
-  return { ok: true, message: 'Committed and pushed to origin/main.' }
+  return { ok: true, message: `Committed and pushed to origin/${branch}.` }
+}
+const validRepoUrl = (url) => /^(https:\/\/github\.com\/[^\s]+|git@github\.com:[^\s]+)$/i.test(url)
+async function gitSetup(url, branch) {
+  const inside = await git('rev-parse --is-inside-work-tree')
+  if (!inside.ok) {
+    const init = await git('init')
+    if (!init.ok) return { ok: false, error: init.message || 'Could not initialize git.' }
+  }
+  if (url) {
+    const current = await git('remote get-url origin')
+    const setRemote = current.ok ? await git(`remote set-url origin ${JSON.stringify(url)}`) : await git(`remote add origin ${JSON.stringify(url)}`)
+    if (!setRemote.ok) return { ok: false, error: setRemote.message || 'Could not configure remote.' }
+  }
+  await git(`branch -M ${branch}`)
+  await git(`branch --set-upstream-to=origin/${branch} ${branch}`)
+  return { ok: true, message: 'GitHub repository configured.', status: await gitStatus() }
 }
 
 app.get('/api/health', (_, response) => response.json({ ok: true, time: new Date().toISOString() }))
@@ -84,6 +121,24 @@ app.post('/api/content', async (request, response) => {
   } catch (error) {
     response.status(400).json({ ok: false, error: error.message })
   }
+})
+app.get('/api/git', async (_, response) => response.json({ ok: true, status: await gitStatus() }))
+app.post('/api/git/setup', async (request, response) => {
+  const url = String((request.body && request.body.url) || '').trim()
+  const branch = String((request.body && request.body.branch) || 'main').trim() || 'main'
+  if (url && !validRepoUrl(url)) {
+    return response.status(400).json({ ok: false, error: 'Enter a valid GitHub repository URL, e.g. https://github.com/owner/repo.git' })
+  }
+  try {
+    const result = await gitSetup(url, branch)
+    response.status(result.ok ? 200 : 400).json(result)
+  } catch (error) {
+    response.status(400).json({ ok: false, error: error.message })
+  }
+})
+app.post('/api/git/push', async (_, response) => {
+  const deploy = await gitDeploy('Update content via local CMS')
+  response.status(deploy.ok ? 200 : 400).json(deploy)
 })
 app.get('/api/backups', (_, response) => {
   const files = fs.readdirSync(backupPath).filter((f) => f.endsWith('.json')).sort().reverse()

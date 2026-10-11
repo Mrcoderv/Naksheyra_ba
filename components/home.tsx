@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import {
   ArrowRight,
@@ -23,6 +23,8 @@ import {
 } from 'lucide-react'
 
 const serviceIcons = [BarChart3, Calculator, ShieldCheck, BriefcaseBusiness, Landmark, Sparkles]
+const BRAND_NAME = 'NAKSHATRA'
+const BRAND_LOGO = '/nakshatra-logo.png'
 const on = (list: any[]) => (Array.isArray(list) ? list.filter((x) => x && x.enabled !== false) : [])
 const show = (section: any) => !!section && section.enabled !== false
 
@@ -74,11 +76,9 @@ export default function Home({ initial }: { initial: any }) {
       <header className="sticky top-0 z-40 border-b border-[#0b1b3d]/10 bg-[#f8f9fa]/95 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
           <a href="#top" className="flex items-center gap-3" aria-label="Nakshatra Business Advisory home">
-            {brand.logoUrl && (
-              <Image src={brand.logoUrl} alt={`${brand.name} logo`} width={72} height={52} className="h-12 w-auto object-contain" unoptimized />
-            )}
+            <Image src={BRAND_LOGO} alt={`${BRAND_NAME} logo`} width={72} height={52} className="h-12 w-auto object-contain" unoptimized />
             <div className="hidden border-l border-[#0b1b3d]/15 pl-3 sm:block">
-              <div className="text-[13px] font-extrabold tracking-[0.18em]">{brand.name}</div>
+              <div className="text-[13px] font-extrabold tracking-[0.18em]">{BRAND_NAME}</div>
               <div className="text-[9px] font-bold tracking-[0.16em] text-[#6e0e14]">{brand.tagline}</div>
             </div>
           </a>
@@ -236,16 +236,7 @@ export default function Home({ initial }: { initial: any }) {
           <div className="mb-4 text-xs font-black uppercase tracking-[0.2em] text-[#6e0e14]">{c.directorAndTeam.eyebrow}</div>
           <h2 className="text-4xl font-black tracking-[-0.04em] sm:text-5xl">{c.directorAndTeam.title}</h2>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-[#0b1b3d]/65">{c.directorAndTeam.subtitle}</p>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {team.map((m: any) => (
-              <article key={m.id || m.name} className="rounded-3xl border border-[#0b1b3d]/10 bg-white p-7">
-                {m.imageUrl && <Image src={m.imageUrl} alt={m.name} width={80} height={80} className="mb-5 size-20 object-contain" unoptimized />}
-                <h3 className="text-xl font-black">{m.name}</h3>
-                <div className="mt-1 text-sm font-bold text-[#0a7e39]">{m.title}</div>
-                <p className="mt-3 text-sm leading-7 text-[#0b1b3d]/60">{m.bio}</p>
-              </article>
-            ))}
-          </div>
+          <TeamSlider team={team} />
         </section>
       )}
 
@@ -375,6 +366,18 @@ export default function Home({ initial }: { initial: any }) {
               <button type="submit" className="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-[#0a7e39] px-5 py-4 font-bold text-white transition-colors hover:bg-[#0b1b3d]">Send enquiry <ArrowRight className="ml-2 size-4" /></button>
             </form>
           </div>
+          {contact.mapUrl && (
+            <div className="mx-auto mt-12 max-w-7xl overflow-hidden rounded-3xl border border-[#0b1b3d]/10 bg-white shadow-xl shadow-[#0b1b3d]/5">
+              <iframe
+                src={contact.mapUrl}
+                title={contact.mapTitle || 'Office location map'}
+                className="h-80 w-full sm:h-96"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+            </div>
+          )}
         </section>
       )}
 
@@ -382,7 +385,7 @@ export default function Home({ initial }: { initial: any }) {
         <footer className="bg-[#0b1b3d] px-5 py-10 text-white lg:px-8">
           <div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 sm:flex-row sm:items-end">
             <div>
-              <div className="text-lg font-black tracking-[0.12em]">{footer.brandName}</div>
+              <div className="text-lg font-black tracking-[0.12em]">{BRAND_NAME}</div>
               <div className="mt-1 text-xs font-bold tracking-[0.16em] text-[#7bc497]">{footer.tagline}</div>
               <p className="mt-5 text-sm text-white/50">{footer.note}</p>
             </div>
@@ -406,6 +409,56 @@ export default function Home({ initial }: { initial: any }) {
 
       {show(c.notificationPopup) && <Notice popup={c.notificationPopup} />}
     </main>
+  )
+}
+
+function TeamSlider({ team }: { team: any[] }) {
+  const viewport = useRef<HTMLDivElement>(null)
+  const [step, setStep] = useState(0)
+
+  useEffect(() => {
+    const el = viewport.current
+    const card = el?.firstElementChild as HTMLElement | null
+    if (!el || !card) return
+    const gap = 24
+    const measure = card.getBoundingClientRect().width + gap
+    setStep(measure)
+    if (team.length < 2) return
+    const id = setInterval(() => {
+      if (el.scrollWidth <= el.clientWidth + 4) return
+      if (el.scrollLeft + measure >= el.scrollWidth - 4) el.scrollTo({ left: 0, behavior: 'smooth' })
+      else el.scrollBy({ left: measure, behavior: 'smooth' })
+    }, 5000)
+    return () => clearInterval(id)
+  }, [team.length])
+
+  const move = (dir: number) => viewport.current?.scrollBy({ left: dir * step, behavior: 'smooth' })
+
+  return (
+    <div className="mt-10">
+      <div
+        ref={viewport}
+        className="flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {team.map((m: any) => (
+          <article
+            key={m.id || m.name}
+            className="w-full shrink-0 snap-start rounded-3xl border border-[#0b1b3d]/10 bg-white p-7 sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]"
+          >
+            {m.imageUrl && <Image src={m.imageUrl} alt={m.name} width={80} height={80} className="mb-5 size-20 object-contain" unoptimized />}
+            <h3 className="text-xl font-black">{m.name}</h3>
+            <div className="mt-1 text-sm font-bold text-[#0a7e39]">{m.title}</div>
+            <p className="mt-3 text-sm leading-7 text-[#0b1b3d]/60">{m.bio}</p>
+          </article>
+        ))}
+      </div>
+      {team.length > 1 && (
+        <div className="mt-4 flex justify-end gap-3">
+          <button type="button" onClick={() => move(-1)} aria-label="Previous team member" className="grid size-11 place-items-center rounded-full border border-[#0b1b3d]/15 bg-white text-2xl leading-none transition-colors hover:bg-[#0a7e39] hover:text-white">‹</button>
+          <button type="button" onClick={() => move(1)} aria-label="Next team member" className="grid size-11 place-items-center rounded-full border border-[#0b1b3d]/15 bg-white text-2xl leading-none transition-colors hover:bg-[#0a7e39] hover:text-white">›</button>
+        </div>
+      )}
+    </div>
   )
 }
 
